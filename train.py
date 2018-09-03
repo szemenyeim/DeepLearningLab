@@ -24,45 +24,16 @@ if __name__ == "__main__":
     root = 'C:/data/' if sys.platform == 'win32' else './data'
 
     # Data augmentation
-    transform = transforms.Compose([
-        transforms.RandomCrop(32, padding=4),
-        transforms.RandomHorizontalFlip(),
-        transforms.ColorJitter(brightness=0.25, contrast=0.25, saturation=0.25, hue=0.2),
-        transforms.ToTensor(),
-        transforms.Normalize((0.49139968, 0.48215827, 0.44653124),
-                             (0.24703233, 0.24348505, 0.26158768))
-    ])
-    transform_val = transforms.Compose([
-        transforms.ToTensor(),
-        transforms.Normalize((0.49139968, 0.48215827, 0.44653124),
-                             (0.24703233, 0.24348505, 0.26158768))
-    ])
 
     # Define Datasets
-    trainSet = torchvision.datasets.CIFAR10(root=root, download=True,
-                                            train=True, transform=transform)
-    testSet = torchvision.datasets.CIFAR10(root=root, download=True,
-                                           train=False, transform=transform_val)
 
     # Data loaders
-    trainLoader = torch.utils.data.DataLoader(trainSet, batch_size=128,  # sampler=sampler,
-                                              shuffle=True, num_workers=4)
-    testLoader = torch.utils.data.DataLoader(testSet, batch_size=128,  # sampler=sampler,
-                                             shuffle=False, num_workers=4)
 
     # Create net, convert to cuda
-    #net = densenet.DenseNet169()
-    net = ConvNet(16)
-    if haveCuda:
-        net = net.cuda()
 
     # Loss, and optimizer
-    criterion = nn.CrossEntropyLoss()
-    optimizer = optim.SGD(net.parameters(), lr=0.1, momentum=0.9,
-                          nesterov=True, weight_decay=1e-4)
 
     # Create LR cheduler
-    scheduler = lr_scheduler.StepLR(optimizer,20)
 
     # Logger
     logger = Logger('./logs')
@@ -76,41 +47,25 @@ if __name__ == "__main__":
         total = 0
 
         # set the network to train (for batchnorm and dropout)
-        net.train()
 
         # Create progress bar
-        bar = progressbar.ProgressBar(0, len(trainLoader), redirect_stdout=False)
 
         # Epoch loop
-        for i, data in enumerate(trainLoader, 0):
+
             # get the inputs
-            inputs, labels = data
 
             # Convert to cuda conditionally
-            if haveCuda:
-                inputs, labels = inputs.cuda(), labels.cuda()
 
 
             # zero the parameter gradients
-            optimizer.zero_grad()
 
             # forward + backward + optimize
-            outputs = net(inputs)
-            loss = criterion(outputs, labels)
-            loss.backward()
-            optimizer.step()
 
             # compute statistics
-            running_loss += loss.item()
-            _, predicted = torch.max(outputs, 1)
-            total += labels.size(0)
-            correct += predicted.eq(labels).sum().item()
 
             # Update progress bar
-            bar.update(i)
 
         # Finish progress bar
-        bar.finish()
 
         # print and plot statistics
         tr_loss = running_loss / len(trainLoader)
@@ -131,35 +86,21 @@ if __name__ == "__main__":
         total = 0
 
         # set the network to eval (for batchnorm and dropout)
-        net.eval()
 
         # Create progress bar
-        bar = progressbar.ProgressBar(0, len(testLoader), redirect_stdout=False)
 
         # Epoch loop
-        for i, data in enumerate(testLoader, 0):
             # get the inputs
-            inputs, labels = data
 
             # Convert to cuda conditionally
-            if haveCuda:
-                inputs, labels = inputs.cuda(), labels.cuda()
 
             # forward
-            outputs = net(inputs)
-            loss = criterion(outputs, labels)
 
             # compute statistics
-            running_loss += loss.item()
-            _, predicted = torch.max(outputs, 1)
-            total += labels.size(0)
-            correct += predicted.eq(labels).sum().item()
 
             # Update progress bar
-            bar.update(i)
 
         # Finish progress bar
-        bar.finish()
 
         # print and plot statistics
         val_loss = running_loss / len(testLoader)
@@ -188,17 +129,10 @@ if __name__ == "__main__":
     for epoch in range(numEpoch):
 
         # Step with the scheduler
-        scheduler.step()
 
         # Call train and val
-        train(epoch)
-        _,val_corr = val(epoch)
 
         # If val accuracy is better, save the model
-        if bestAcc < val_corr:
-            bestAcc = val_corr
-            print("Best model, saving")
-            torch.save(net,root + '/model.pth')
 
     # Finished
     print('Finished Training')

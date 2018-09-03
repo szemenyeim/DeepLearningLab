@@ -44,48 +44,30 @@ while(1):
     if not ret:
         print("Failed to read from camera")
         exit(-1)
-    #img = cv2.imread("./input_images/snake.jpg")
 
-    # Create image tensor
-    img2 = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    pil_im = Image.fromarray(img2)
-    imageT = transform(pil_im).unsqueeze(0).cuda()
-    imageT.requires_grad_(True)
+    # Create image tensor:
+    #BGR - RGB
+    # Convert to PIL
+    # Apply transform, unsqueeze and convert to cuda
+    # Require gradient
 
     # Get image class if necessary
-    if classInd == -1:
-        _, classInd = torch.max(model(imageT),1)
-        classInd = classInd[0].cpu().item()
 
     # get class name
     text = classNames[classInd]
     cv2.putText(img,text,(20,40), cv2.FONT_HERSHEY_PLAIN,2,(0,0,255))
 
     # Get gradients
-    guided_grads = GBP.generate_gradients(imageT, classInd)
 
     # Sum absolute gradients along channels and convert to opencv
-    gradImg = grad2OpenCV(np.sum(np.abs(guided_grads), axis=0))
 
     # Threshold
-    _,binImage = cv2.threshold(gradImg,threshVal,255,cv2.THRESH_BINARY)
 
     # Get contours
-    _, contours, _ = cv2.findContours(binImage,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
 
     # Find biggest
-    index = -1
-    maxSize = -1
-    for i, cont in enumerate(contours):
-        area = cv2.contourArea(cont)
-        if area > maxSize:
-            maxSize = area
-            index = i
 
     # Draw biggest contour
-    contImage = np.zeros(binImage.shape,binImage.dtype)
-    if index > -1:
-        cv2.drawContours(contImage,contours,index,255,-1)
 
     # Show thresholded gradient image and biggest contour
     cv2.imshow("Video",img)
