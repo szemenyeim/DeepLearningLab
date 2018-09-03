@@ -6,6 +6,9 @@ from torchvision import models
 import numpy as np
 from GuidedBP import GuidedBackprop
 
+text_file = open("imageNet.txt", "r")
+classNames = text_file.read().split('\n')
+
 # Convert gradient image to an opencv one and normalize it
 def grad2OpenCV(gradImg):
     gradImg /= gradImg.max()
@@ -20,14 +23,14 @@ transform = transforms.Compose([
 )
 
 # Used model
-model = models.vgg19_bn(pretrained=True).cuda()
+model = models.alexnet(pretrained=True).cuda()
 
 # Guided backprop class
 GBP = GuidedBackprop(model)
 
 # Control variables
 classInd = -1
-threshVal = 10
+threshVal = 15
 
 # Open camera stream
 cap = cv2.VideoCapture(0)
@@ -37,13 +40,15 @@ if not cap.isOpened():
 
 while(1):
     # Read and display image
-    img = cap.read()
+    ret,img = cap.read()
+    if not ret:
+        print("Failed to read from camera")
+        exit(-1)
     #img = cv2.imread("./input_images/snake.jpg")
-    cv2.imshow("Video",img)
 
     # Create image tensor
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    pil_im = Image.fromarray(img)
+    img2 = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    pil_im = Image.fromarray(img2)
     imageT = transform(pil_im).unsqueeze(0).cuda()
     imageT.requires_grad_(True)
 
@@ -51,6 +56,10 @@ while(1):
     if classInd == -1:
         _, classInd = torch.max(model(imageT),1)
         classInd = classInd[0].cpu().item()
+
+    # get class name
+    text = classNames[classInd]
+    cv2.putText(img,text,(20,40), cv2.FONT_HERSHEY_PLAIN,2,(0,0,255))
 
     # Get gradients
     guided_grads = GBP.generate_gradients(imageT, classInd)
@@ -79,6 +88,7 @@ while(1):
         cv2.drawContours(contImage,contours,index,255,-1)
 
     # Show thresholded gradient image and biggest contour
+    cv2.imshow("Video",img)
     cv2.imshow('Guided grads', binImage)
     cv2.imshow('Object', contImage)
 
