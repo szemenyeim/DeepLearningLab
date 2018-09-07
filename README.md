@@ -1,4 +1,4 @@
-# CIFAR 10 training and object tracking DEMO in PyIorch
+# CIFAR 10 training and object tracking DEMO in PyTorch
 Control Engineering and Image Processing Lab - Object Tracking
 
 ## Requirements
