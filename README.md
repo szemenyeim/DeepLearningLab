@@ -5,11 +5,11 @@ Control Engineering and Image Processing Lab - Object Tracking
 * Python 3.6
 * Pytorch 4.x
 * OpenCV 3.x
-* Optional: Tensorflow (for tensorBoard logging)
+* Optional: Tensorflow (for TensorBoard logging)
 
 ## Run
-For the CIFAR 10 training run `python train.py'
-For the tracking use 'python track.py'
+For the CIFAR 10 training run `python train.py`
+For the tracking use 'python track.py`
 
 # References
 Guided Backprop code based on https://github.com/utkuozbulak/pytorch-cnn-visualizations
