@@ -9,8 +9,10 @@ Control Engineering and Image Processing Lab - Object Tracking
 
 ## Run
 For the CIFAR 10 training run `python train.py`
-For the tracking use 'python track.py`
+
+For the tracking use `python track.py`
 
 # References
 Guided Backprop code based on https://github.com/utkuozbulak/pytorch-cnn-visualizations
+
 DenseNet implementation by https://github.com/kuangliu/pytorch-cifar
