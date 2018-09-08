@@ -21,7 +21,7 @@ class ConvNet(nn.Module):
         self.c3 = Conv(planes*4,planes*4,size)
         self.p3 = Conv(planes*4,planes*8,size+2,4)
 
-        self.classifier = Conv(planes*8,10,1)
+        self.classifier = nn.Conv2d(planes*8,10,1)
 
     def forward(self, x):
         x = self.p1(self.c1(x))
