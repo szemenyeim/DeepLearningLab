@@ -28,8 +28,11 @@ if __name__ == "__main__":
     # Define Datasets
 
     # Data loaders
+    trainLoader = None
+    testLoader = None
 
     # Create net, convert to cuda
+    net = ConvNet(8)
 
     # Loss, and optimizer
 
@@ -127,6 +130,8 @@ if __name__ == "__main__":
     numEpoch = 20
 
     for epoch in range(numEpoch):
+
+        print("Starting epoch %d of %d" % (epoch, numEpoch))
 
         # Step with the scheduler
 

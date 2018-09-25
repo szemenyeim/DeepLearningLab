@@ -10,6 +10,8 @@ class Conv(nn.Module):
     def forward(self, x):
         # Call ReLU, batchnorm and conv
 
+        return x
+
 class ConvNet(nn.Module):
     def __init__(self, planes, size = 3):
         super(ConvNet,self).__init__()
@@ -19,3 +21,5 @@ class ConvNet(nn.Module):
 
     def forward(self, x):
         # Call layers
+
+        return x
