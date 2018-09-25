@@ -36,7 +36,7 @@ if __name__ == "__main__":
     # Create LR cheduler
 
     # Logger
-    logger = Logger('./logs')
+    logger = Logger('./logs/run1')
 
     # train function
     def train(epoch):
@@ -124,7 +124,7 @@ if __name__ == "__main__":
     bestAcc = 0
 
     # Epoch counter
-    numEpoch = 50
+    numEpoch = 20
 
     for epoch in range(numEpoch):
 
