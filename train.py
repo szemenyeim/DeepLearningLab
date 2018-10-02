@@ -46,9 +46,9 @@ if __name__ == "__main__":
 
     # Data loaders
     trainLoader = torch.utils.data.DataLoader(trainSet, batch_size=128,  # sampler=sampler,
-                                              shuffle=True, num_workers=4)
+                                              shuffle=True, num_workers=2)
     testLoader = torch.utils.data.DataLoader(testSet, batch_size=128,  # sampler=sampler,
-                                             shuffle=False, num_workers=4)
+                                             shuffle=False, num_workers=2)
 
     # Create net, convert to cuda
     #net = densenet.DenseNet169()
