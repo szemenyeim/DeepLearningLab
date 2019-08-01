@@ -5,7 +5,6 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.optim import lr_scheduler
 import progressbar
-import densenet
 from logger import Logger
 from model import ConvNet
 import sys
@@ -21,7 +20,10 @@ if __name__ == "__main__":
         torch.manual_seed(1)
 
     # path to dataset
-    root = 'C:/data/' if sys.platform == 'win32' else './data'
+    root = "E:/Traffic/trafficSigns" if sys.platform == 'win32' else "./data"
+
+    trRoot = root+"/trainFULL"
+    teRoot = root+"/testFULL"
 
     # Data augmentation
     transform = transforms.Compose([
@@ -39,19 +41,17 @@ if __name__ == "__main__":
     ])
 
     # Define Datasets
-    trainSet = torchvision.datasets.CIFAR10(root=root, download=True,
-                                            train=True, transform=transform)
-    testSet = torchvision.datasets.CIFAR10(root=root, download=True,
-                                           train=False, transform=transform_val)
+    trainSet = torchvision.datasets.ImageFolder(root=trRoot, transform=transform)
+    testSet = torchvision.datasets.ImageFolder(root=teRoot, transform=transform_val)
 
     # Data loaders
-    trainLoader = torch.utils.data.DataLoader(trainSet, batch_size=128,  # sampler=sampler,
-                                              shuffle=True, num_workers=2)
+    trainLoader = torch.utils.data.DataLoader(trainSet, batch_size=512,  # sampler=sampler,
+                                              shuffle=True, num_workers=4)
     testLoader = torch.utils.data.DataLoader(testSet, batch_size=128,  # sampler=sampler,
-                                             shuffle=False, num_workers=2)
+                                             shuffle=False, num_workers=4)
+
 
     # Create net, convert to cuda
-    #net = densenet.DenseNet169()
     net = ConvNet(8)
     if haveCuda:
         net = net.cuda()
@@ -62,7 +62,9 @@ if __name__ == "__main__":
                           nesterov=True, weight_decay=1e-4)
 
     # Create LR cheduler
-    scheduler = lr_scheduler.StepLR(optimizer,20)
+    # Epoch counter
+    numEpoch = 20
+    scheduler = lr_scheduler.CosineAnnealingLR(optimizer,numEpoch,1e-2)
 
     # Logger
     logger = Logger('./logs/run1')
@@ -115,7 +117,7 @@ if __name__ == "__main__":
         # print and plot statistics
         tr_loss = running_loss / len(trainLoader)
         tr_corr = correct / total * 100
-        print("Train epoch %d loss: %.3f correct: %.2f" % (epoch + 1, tr_loss, tr_corr))
+        print("Train epoch %d lr: %.3f loss: %.3f correct: %.2f" % (epoch + 1, scheduler.get_lr()[0], tr_loss, tr_corr))
 
         # 1. Log scalar values (scalar summary)
         info = {'Training Loss': tr_loss, 'Training Accuracy': tr_corr}
@@ -181,9 +183,6 @@ if __name__ == "__main__":
 
     # Accuracy
     bestAcc = 0
-
-    # Epoch counter
-    numEpoch = 20
 
     for epoch in range(numEpoch):
 
