@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="599402d8-e861-4b58-80b5-36bcff23c7ab" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/DeepLearningLab.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/DeepLearningLab.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/detect.py" beforeDir="false" afterPath="$PROJECT_DIR$/detect.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/train.py" beforeDir="false" afterPath="$PROJECT_DIR$/train.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -18,14 +19,6 @@
         <option value="Python Script" />
       </list>
     </option>
-  </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>combo</find>
-      <find>Varia</find>
-      <find>features</find>
-      <find>cuda</find>
-    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -51,7 +44,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.detect">
+  <component name="RunManager" selected="Python.train">
     <configuration name="detect" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="DeepLearningLab" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -117,9 +110,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.train" />
         <item itemvalue="Python.detect" />
         <item itemvalue="Python.folderRename" />
-        <item itemvalue="Python.train" />
       </list>
     </recent_temporary>
   </component>

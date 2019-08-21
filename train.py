@@ -5,7 +5,6 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.optim import lr_scheduler
 import progressbar
-from logger import Logger
 from model import ConvNet
 import sys
 
@@ -65,9 +64,6 @@ if __name__ == "__main__":
     numEpoch = 20
     scheduler = lr_scheduler.CosineAnnealingLR(optimizer,numEpoch,1e-2)
 
-    # Logger
-    logger = Logger('./logs/run1')
-
     # train function
     def train(epoch):
 
@@ -118,11 +114,6 @@ if __name__ == "__main__":
         tr_corr = correct / total * 100
         print("Train epoch %d lr: %.3f loss: %.3f correct: %.2f" % (epoch + 1, scheduler.get_lr()[0], tr_loss, tr_corr))
 
-        # 1. Log scalar values (scalar summary)
-        info = {'Training Loss': tr_loss, 'Training Accuracy': tr_corr}
-        for tag, value in info.items():
-            logger.scalar_summary(tag, value, epoch + 1)
-
     # Validation function
     def val(epoch):
 
@@ -167,26 +158,12 @@ if __name__ == "__main__":
         val_corr = correct / total * 100
         print("Test epoch %d loss: %.3f correct: %.2f" % (epoch + 1, val_loss, val_corr))
 
-        # 1. Log scalar values (scalar summary)
-        info = {'Validation Loss': val_loss, 'Validation Accuracy': val_corr}
-        for tag, value in info.items():
-            logger.scalar_summary(tag, value, epoch + 1)
-
-        # 2. Log values and gradients of the parameters (histogram summary)
-        for tag, value in net.named_parameters():
-            tag = tag.replace('.', '/')
-            logger.histo_summary(tag, value.data.cpu().numpy(), epoch+1)
-            logger.histo_summary(tag+'/grad', value.grad.data.cpu().numpy(), epoch+1)
-
         return val_loss, val_corr
 
     # Accuracy
     bestAcc = 0
 
     for epoch in range(numEpoch):
-
-        # Step with the scheduler
-        scheduler.step()
 
         # Call train and val
         train(epoch)
@@ -197,6 +174,10 @@ if __name__ == "__main__":
             bestAcc = val_corr
             print("Best model, saving")
             torch.save(net,root + '/model.pth')
+
+        # Step with the scheduler
+        scheduler.step()
+
 
     # Finished
     print('Finished Training')
