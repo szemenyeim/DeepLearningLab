@@ -53,7 +53,7 @@ if __name__ == '__main__':
         img_bin = cv2.morphologyEx(img_bin, cv2.MORPH_CLOSE, SE,iterations=4)
 
         # Retrieve external contours
-        _,contours,_ = cv2.findContours(img_bin,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+        contours,_ = cv2.findContours(img_bin,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
 
         # Get bounding rects for contours larger than 1000 square pixels
         ROIs = [cv2.boundingRect(c) for c in contours if cv2.contourArea(c) > 1000]

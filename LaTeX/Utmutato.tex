@@ -367,8 +367,8 @@ A mérés folyamán az alábbi feladatokat kell elvégezni:
 \begin{tabular}{| c | c | c | c | c |}
 	\hline
 	$N_{CH}$ & \textbf{LR} & \textbf{Eta\_min} & \textbf{Momentum} & \textbf{Decay} \\ \hline \hline
-	8 & 1e-1 & 1e-2 & 0.1 & 1e-4 \\ \hline
-	8 & 1e-1 & 1e-2 & 0.9 & 1e-3  \\ \hline
+	8 & 1e-1 & 1e-2 & 0.1 & 1e-3 \\ \hline
+	8 & 1e-1 & 1e-2 & 0.9 & 1e-4  \\ \hline
 	8 & 1 & 1e-2 & 0.9 & 1e-1  \\ \hline
 	8 & 1e-3 & 1e-4 & 0.9 & 1e-5  \\ \hline
 	16 & 1e-1& 1e-2 & 0.9 & 1e-5  \\ \hline
@@ -525,10 +525,17 @@ pil_im = Image.fromarray(img2)
 imageT = transform(pil_im).unsqueeze(0).cuda()
 \end{lstlisting}
 
-Küszöbözés
+Küszöbözés határok közt
 
 \begin{lstlisting}[language=Python]
-_,binImage = cv2.threshold(gradImg,threshVal,255,cv2.THRESH_BINARY)
+img_bin = cv2.inRange(img_hsv,np.array([0,100,80]),np.array([255,255,255]))
+\end{lstlisting}
+
+Morfológia
+
+\begin{lstlisting}[language=Python]
+SE = np.ones((3, 3), np.uint8)
+img_bin = cv2.morphologyEx(img_bin, cv2.MORPH_CLOSE, SE,iterations=4)
 \end{lstlisting}
 
 Kontúrok keresése
@@ -537,22 +544,29 @@ Kontúrok keresése
 contours, _ = cv2.findContours(binImage,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
 \end{lstlisting}
 
-Maximum keresése
+Lista komprehenzió
 
 \begin{lstlisting}[language=Python]
-maxidx = np.argmax([function(element) for element in list])
+outList = [function(element) for element in list]
 \end{lstlisting}
 
-Kontúr területének számolása
+Képrészlet kivágása (hard copy)
 
 \begin{lstlisting}[language=Python]
-area = cv2.contourArea(cont)
+img2 = img[y1:y2,x1:x2].copy()
 \end{lstlisting}
 
-Kontúr rajzolása
+Kép átméretezése
 
 \begin{lstlisting}[language=Python]
-cv2.drawContours(contImage,contours,index,255,-1)
+cv2.resize(img,(32,32))
+\end{lstlisting}
+
+Téglalap rajzolása és kiírás
+
+\begin{lstlisting}[language=Python]
+cv2.rectangle(img,(x1,y1),(x2,y2),(255,0,255),2)
+cv2.putText(img,className,(x1,y1-10),cv2.FONT_HERSHEY_COMPLEX_SMALL,1.0,(0,255,0))
 \end{lstlisting}
 
 
