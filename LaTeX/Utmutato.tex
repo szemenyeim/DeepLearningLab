@@ -1,0 +1,585 @@
+\documentclass[12pt,a4paper,oneside]{report}             % Single-side
+%\documentclass[12pt,a4paper,twoside,openright]{report}  % Duplex
+
+%\PassOptionsToPackage{chapternumber=Huordinal}{magyar.ldf}
+\usepackage{bm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{enumerate}
+\usepackage[thmmarks]{ntheorem}
+\usepackage{graphics}
+\usepackage{epsfig}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{lastpage}
+\usepackage{anysize}
+\usepackage{sectsty}
+\usepackage{setspace}  % Ettol a tablazatok, abrak, labjegyzetek maradnak 1-es sorkozzel!
+\usepackage[hang]{caption}
+\usepackage{hyperref}
+\usepackage[magyar]{babel}
+\usepackage{fontspec}
+\usepackage{textcomp}
+\usepackage{subcaption}
+\usepackage{titlesec, blindtext, color}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{todonotes}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage[sorting=none, backend=biber, style=ieee]{biblatex}
+\usepackage{courier}
+\addbibresource{bib.bib}
+\lstloadaspects{formats}
+
+\definecolor{commentgreen}{RGB}{0,200,10}
+\definecolor{weborange}{RGB}{255,10,0}
+\definecolor{frenchplum}{RGB}{129,20,83}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\setlength{\headheight}{14.5pt}
+
+\lstdefinestyle{mystyle}{
+	backgroundcolor=\color{backcolour},   
+	commentstyle=\color{codegray},
+	keywordstyle=\bf\color{frenchplum},
+	numberstyle=\color{frenchplum},
+	stringstyle=\color{commentgreen},
+	basicstyle=\ttfamily\footnotesize,
+	breakatwhitespace=false, 
+	fontadjust=true,        
+	breaklines=true,                 
+	captionpos=b,
+	columns=flexible,                   
+	keepspaces=true,                 
+	numbers=none,                    
+	numbersep=5pt,                  
+	showspaces=false,                
+	showstringspaces=false,
+	showtabs=false,                 
+	tabsize=4
+}
+
+\lstset{style=mystyle}
+
+%--------------------------------------------------------------------------------------
+% Main variables
+%--------------------------------------------------------------------------------------
+\newcommand{\vikauthor}{Szemenyei Márton}
+\newcommand{\viktitle}{M8 – Osztályozás mély neurális hálókkal}
+\newcommand{\vikdept}{Irányítástechnika és Informatika Tanszék}
+\newcommand{\vikdoktipus}{Irányítástechnika és Képfeldolgozás Laboratórium}
+\newcommand{\viksubtitle}{Mérési Útmutató}
+
+%--------------------------------------------------------------------------------------
+% Page layout setup
+%--------------------------------------------------------------------------------------
+% we need to redefine the pagestyle plain
+% another possibility is to use the body of this command without \fancypagestyle
+% and use \pagestyle{fancy} but in that case the special pages
+% (like the ToC, the References, and the Chapter pages)remain in plane style
+
+\pagestyle{plain}
+\setlength{\parindent}{0pt} % �ttekinthet�bb, angol nyelv� dokumentumokban jellemz�
+\setlength{\parskip}{8pt plus 3pt minus 3pt} % �ttekinthet�bb, angol nyelv� dokumentumokban jellemz�
+%\setlength{\parindent}{12pt} % magyar nyelv� dokumentumokban jellemz�
+%\setlength{\parskip}{0pt}    % magyar nyelv� dokumentumokban jellemz�
+
+\marginsize{35mm}{25mm}{15mm}{15mm} % anysize package
+\setcounter{secnumdepth}{0}
+\sectionfont{\large\upshape\bfseries}
+\setcounter{secnumdepth}{2}
+
+%--------------------------------------------------------------------------------------
+%	Setup hyperref package
+%--------------------------------------------------------------------------------------
+\hypersetup{
+    pdftitle={\viktitle},        % title
+    pdfauthor={\vikauthor},    % author
+    pdfsubject={\vikdoktipus}, % subject of the document
+    pdfcreator={\vikauthor},   % creator of the document
+    pdfkeywords={Számítógépes látás, Neurális Háló. Deep Learning, Osztályozás},    % list of keywords
+    pdfnewwindow=true,         % links in new window
+    colorlinks=true,           % false: boxed links; true: colored links
+    linkcolor=black,           % color of internal links
+    citecolor=black,           % color of links to bibliography
+    filecolor=black,           % color of file links
+    urlcolor=black             % color of external links
+}	
+
+%--------------------------------------------------------------------------------------
+%	Some new commands and declarations
+%--------------------------------------------------------------------------------------
+\newcommand{\code}[1]{{\upshape\ttfamily\scriptsize\indent #1}}
+
+% define references
+\newcommand{\figref}[1]{\ref{fig:#1}.}
+\renewcommand{\eqref}[1]{(\ref{eq:#1})}
+\newcommand{\listref}[1]{\ref{listing:#1}.}
+\newcommand{\sectref}[1]{\ref{sect:#1}}
+\newcommand{\tabref}[1]{\ref{tab:#1}.}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+%\DeclareMathOperator*[1]{\floor}{arg\,max}
+\DeclareMathOperator{\sign}{sgn}
+\DeclareMathOperator{\rot}{rot}
+\definecolor{lightgray}{rgb}{0.95,0.95,0.95}
+
+\newcommand{\hsp}{\hspace{20pt}}
+\titleformat{\chapter}[hang]{\Huge\bfseries}{\thechapter\hsp}{0pt}{\Huge\bfseries}
+\titlespacing*{\chapter}{0pt}{0pt}{40pt}
+
+
+\author{\vikauthor}
+\title{\viktitle}
+%--------------------------------------------------------------------------------------
+%	Setup captions
+%--------------------------------------------------------------------------------------
+\captionsetup[figure]{
+%labelsep=none,
+%font={footnotesize,it},
+%justification=justified,
+width=.9\textwidth,
+aboveskip=10pt}
+
+\renewcommand{\captionlabelfont}{\small\bf}
+\renewcommand{\captionfont}{\footnotesize\it}
+
+\fancypagestyle{plain}{%
+	\fancyhf{}
+	\renewcommand{\footrulewidth}{1pt}
+	\chead{\viktitle}
+	\lfoot{\thepage/\pageref{LastPage}} %/\pagetotal
+	\rfoot{\leftmark}
+}
+\pagestyle{plain}
+
+\pagestyle{fancy}
+\renewcommand{\chaptermark}[1]{\markboth{\MakeUppercase{#1}}{}}
+\fancyhf{}
+\chead{\viktitle}
+\lfoot{\thepage/\pageref{LastPage}} %/\pagetotal
+\rfoot{\leftmark}
+\renewcommand{\footrulewidth}{1pt}
+
+%--------------------------------------------------------------------------------------
+% Table of contents and the main text
+%--------------------------------------------------------------------------------------
+\begin{document}
+
+\onehalfspacing
+
+%--------------------------------------------------------------------------------------
+%	The title page
+%--------------------------------------------------------------------------------------
+\begin{titlepage}
+\begin{center}
+\includegraphics[width=60mm,keepaspectratio]{images/logo.png}\\
+\vspace{0.3cm}
+\textbf{Budapesti Műszaki és Gazdaságtudományi Egyetem}\\
+\textmd{Villamosmérnöki és Informatikai Kar}\\
+\textmd{\vikdept}\\[5cm]
+
+\vspace{0.4cm}
+{\huge \bfseries \viktitle}\\[2cm]
+\textsc{\Large \viksubtitle}\\[1cm]
+\textsc{\Large \vikdoktipus}\\[6cm]
+
+\vfill
+{\large \vikauthor}
+\end{center}
+\end{titlepage}
+
+%\pagenumbering{arabic}
+
+%--------------------------------------------------------------------------------------
+% tartalom, ábra és táblázatjegyzék
+%--------------------------------------------------------------------------------------
+\singlespacing
+\tableofcontents\thispagestyle{fancy}
+\titleformat{\chapter}[hang]{\Huge\bfseries}{\thechapter\hsp}{0pt}{\Huge\bfseries}
+
+\chapter{Neurális hálók}
+
+A számítógépes látás a számítástudomány egyik legrohamosabban fejlődő területe, amelynek egyre több gyakorlati felhasználása létezik. Ez a tendencia nem meglepő, hiszen az ember az érzékszervei közül a szemre hagyatkozik a leginkább a napi feladatinak ellátásakor. Ebből következik, hogy ha a számítógépes látás algoritmusai képesek megközelíteni, vagy akár felülmúlni az emberi látás képességeit, akkor számos fontos feladatot leszünk képesek automatizálni. Könnyen belátható azonban az is, hogy a gyakorlatban ez egy rendkívül nehéz feladat, mivel általában olyan feladatokat tudunk könnyedén algoritmusok formájában leírni, ahol a feladat elvégzésének a menetét pontosan, tudatos szinten megértjük. A szemből érkező jelek feldolgozásának azonban a jelentős része tudatalatti szinten történik, így aligha tudjuk ezeket a folyamatokat könnyedén megérteni, és algoritmusok formájában lemásolni.
+
+Ennek a problémának a megoldásához a mesterséges intelligencia, ezen belül is a gépi tanulás módszereihez kell nyúlnunk. A tanuló számítógépes látás legegyszerűbb formája az osztályozás, vagyis amikor egy képhez egyetlen címkét rendelünk, amely a képen található objektum kategóriáját kódolja. Bizonyos esetekben a címke mellé már egy az adott objektumot körbefogó téglalapot is rendelünk, ebben az esetben lokalizációról beszélhetünk. Adott esetben ennél magasabb szintű információt is szeretnénk kinyerni a képből: érdekelhet minket az, hogy melyek azok a pixelek az adott képen, amelyek az észlelt osztályhoz tartoznak. Amennyiben ezt az információt egy képsorozaton minden pixelre meghatározzuk, akkor követésről beszélhetünk.
+
+A neurális hálózatokról és azok tanításáról bővebben a Számítógépes Látórendszerek c. tárgy jegyzetében~\cite{szgl} olvashatunk.
+
+\chapter{A mérés környyezete}
+
+A mérés során a \emph{PyCharm} elnevezésű IDE áll rendelkezésre, amely rendkívül sokoldalú szolgáltatásokkal könnyíti meg a szoftverfejlesztést, például konfigurálható automatikus formázási lehetőségek állnak rendelkezésünkre. További részletekért érdemes lehet a JetBrains ide vonatkozó weboldalát~\cite{pycharm} felkeresni. Függvények, objektumok esetében a \textbf{\textit{Ctrl+P}} billentyűkombináció pop-up segítségként szolgálva mutatja nekünk a paramétereket. A mérés során használt programnyelv a Python 3-as verziója lesz.
+
+\section{A Python nyelv}
+
+A Python programnyelv egy \textbf{\textit{interpretált szkriptnyelv}} (a saját bytekódját hajtja végre), mely alapvetően az \emph{objektumorientált} paradigma által vezérelve került kialakításra. Jelenleg kétféle, kismértékben eltérő főverziója érhető el, ezek közül a mérésen a 3-as verziót használjuk majd.
+
+Az OOP szemlélet olyannyira központi szerepet tölt be Pythonban, hogy minden változó objektumnak tekinthető – ami azt jelenti, hogy az integer és float típusok is objektumok. A nyelv számára jelentős hátrány adatintenzív számítási feladatok elvégzésekor ennek ténye, ugyanis arról beszélünk, hogy a Python \textbf{\textit{nem rendelkezik natív számtípussal}}. Nem véletlen, hogy a hatékony modulok alacsonyabb szintű nyelveken nyugszanak, így a következő alfejezetben ismertetett PyTorch is.
+
+További nem szokványos jellemzője a nyelvnek, hogy \textbf{\textit{nem erősen típusos}}, a változónevekhez futási időben rendelődik hozzá a referált objektum (azaz egy \textbf{\textit{változónév}} igazából egy referens, vagyis adott \textbf{\textit{példányra mutató referenciát}} tartalmaz). Habár Pythonban a referenciák teljesen úgy viselkednek, mint a változók (vagyis semmilyen szintaktikai kiegészítésre nincs szükség, még argumentumok átadása esetében sem, mint ahogy azt C++-ban láttuk). (A félreértések elkerülése végett fontos szem előtt tartani, hogy amennyiben a segédletben a továbbiakban változó szerepel, akkor is igazából referencia van a háttérben, ezért hangsúlyozott általában, hogy nem a változó, hanem a változónév tartalmazza az objektumra mutató referenciát.)
+
+Vagyis lehetőség van arra, hogy egy referenshez (változónévhez) a programban különböző típusú objektumokat rendeljünk hozzá – ez teljesen logikusnak tűnik, ha belegondolunk abba, hogy a „Pythonban minden objektum” korábbi kijelentés lényegében azt sejteti, hogy minden az objektum ősosztály leszármazottja. A referenciák kezelése referenciaszámláló segítségével történik – a koncepció analóg a például C++-ban megtalálható \emph{shared\_ptr} típus esetén használttal.
+
+Pythonban nincsen továbbá pointer sem, az argumentumok átadása \textbf{\textit{referencia szerint}} történik. Itt azonban meg kell különböztetnünk az objektumokat az alapján, hogy módosíthatóak-e. A következőket érdemes alaposan átgondolni, különben hibás működésű programot kaphatunk.
+
+Kétféle objektumtípus létezik, \textbf{\textit{módosítható}} (mutable), ill. \textbf{\textit{nem módosítható}} (immutable). Nem módosíthatóak többek között az egyszerű adattípusok (POD, plain old data), mint az egész vagy lebegőpontos számok, valamint a sztringek. Habár a gondolatmenet e megfontolás mögött elsőre furcsának tűnik, a következőképpen magyarázható: minden adott szám vagy szöveg egyedi, vagyis ha pl. két változóhoz hozzárendeljük az 5 értéket, akkor a kettő tartalma egymással teljesen azonos, ha az egyiket megváltoztatjuk, akkor az már egy másik objektum lesz: nem egy tagváltozót módosítunk, hanem magát az objektumot teljes mértékben és kizárólagosan azonosító elemet. Talán érdemes a fordított programnyelvekből egy szemléletes példát átgondolni: a fordító ugyanolyan értékeket helyettesít be a gépi kódba (érdeklődők számára: a Pythonnak esetében is elérhető egyfajta disassembly a dis modul segítségével).
+
+Módosítható lényegében minden egyéb típus, így a Pythonba beépített konténer jellegű típusok, mint list, dict (ezek különlegessége, hogy nem csak egy típust képesek egyidejűleg magukba foglalni, hanem bármilyen objektumot), de a saját osztályok példányai is ide tartoznak. Ebben az esetben a módosítás nem eredményezi új objektum létrehozását. A tuple egy különleges eset, ugyanis ez a konténer típus immutable, azonban, ha mutable objektumokat tartalmaz, akkor azok módosulhatnak.
+
+Ezek a különbségek objektumok másolása esetében is jelentkezik. Fontos különbség, hogy Pythonban alapvetően a hozzárendelés (assignment) igazából C++-szemszögből inkább a copy constructor hívásának feleltethető meg. Mutable esetben az eredeti objektumhoz tartozó referenciszámláló kerül megnövelésre, módosítás esetén pedig új objektum jön létre, értelemszerűen ugyanarra az értéket tartalmazó változók egyikének megváltoztatása nem hat ki a többire. Immutable esetben azonban nem ilyen egyszerű a helyzet: mivel alapvetően referenciákat tartalmaznak a változónevek, amelyek módosítható objektumokat referálnak, így ugyanarra a példányra mutató referenciák bármelyikének módosítása változást eredményez a referált egy darab objektum esetében, vagyis bármelyik változóval hivatkozunk rá, a változás mindegyik esetben látható lesz számunkra. Az ilyen jellegű másolást shallow copy-nak szokás nevezni, melynek párja a deepcopy (elérhető a copy modulban), ami Pythonban immutable esetben is új példányt hoz létre, így az új objektum független lesz a többitől.
+
+Paraméterek átadása hozzárendeléssel történik, ez azonban nagy objektumok esetében sem okoz komolyabb problémát, ugyanis a referenciák kerülnek csak másolásra. Ez a láthatóságra a következőképpen van hatással: ha a paraméter immutable és a függvénytörzsben módosításra kerül, akkor lényegében a függvény scope-jában egy ideiglenes objektum kerül létrehozásra, a függvényből visszatérve a változó megtartja eredeti értékét. Immutable esetben, mivel a referencia kerül másolásra, az objektumok másolásánál láttuk, hogy az általuk referált objektumok módosítása érvényes, bármelyik referenciájával hivatkozunk is rá, így a függvény visszatérését követően az objektum már módosult értékével használható.
+Rendkívül hasznos tulajdonság, hogy a Python gyakorlatilag bármennyi visszatérési értéket támogat.
+A nyelvi koncepciók ismertetése után a következőkben a szintaktikai részletek kerülnek összefoglalásra.
+
+Pythonban a programkód tagolása indentálással történik, vagyis a kódblokkokat egy tabulátorral beljebb kell kezdeni (ha valamilyen okból üres függvényt, ciklust, stb, kívánunk írni, akkor is kell egy indentált blokk, ezt egy sorban, a pass utasítással valósíthatjuk meg, ami nem hajt végre semmilyen műveletet).
+
+Modulok betöltésére az import utasítással van lehetőségünk, mégpedig kétféle módon: importálhatjuk a teljes modult, ekkor a modul minden osztálya/függvénye a modul neve után írt „.” (pont) operátorral érhető el, ha from-ot használunk, lehetőségünk van csak egyes elemeket betölteni, ekkor a modul nevét nem kell az importált elem neve elé kiírni.
+
+\begin{lstlisting}[language=Python]
+import module
+m = module.MyClass()
+
+import module as md
+m = md.MyClass()
+
+from module import MyClass, my_func
+m = myClass()
+\end{lstlisting}
+
+Függvények a következő módon hozhatók létre:
+
+\begin{lstlisting}[language=Python]
+def func(x):
+x += 1
+print("x = ", x)
+\end{lstlisting}
+
+A def kulcsszó után a függvény neve, majd a paraméterlista kerül megadásra, azt követően pedig az indentált függvénytörzs következik.
+
+Osztályok esetében sem bonyolult a konstrukció:
+
+\begin{lstlisting}[language=Python]
+class my_class(object):
+def __init__(self):
+self.x = 5
+\end{lstlisting}
+
+Pythonban a konstruktort az \_\_init\_\_ (2-2 aláhúzással) rutin testesíti meg, mint látható, a tagfüggvények is majdnem teljesen megegyeznek az általános függvényekkel, azzal a különbséggel, hogy az első argumentum mindenképpen az adott példányra vonatkozik (mint ahogy a this C++-ban) – ezt konvenció szerint self-nek szoktuk nevezni.
+Öröklés esetén nincs más teendőnk, mint az object osztály helyett megadni az általunk választott ősosztályt, majd a konstruktorban meghívni az ősosztály konstruktorát a super, általánosan az ősosztályra használható objektum segítségével.
+
+\begin{lstlisting}[language=Python]
+class base_class(object):
+def __init__(self):
+print("I am Groot")
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+class inherited_class(base_class):
+def __init__(self):
+super().__init__()
+print("I am inherited")
+\end{lstlisting}
+
+Aki mélyebben érdeklődik a Python nyelv iránt, annak érdemes felkeresnie további példaprogramokat és kódrészleteket~\cite{gist}, valamint a TMIT SmartLab blogjának bejegyzéseit~\cite{smart1,smart2} (angolul). 
+
+A Python programnyelvhez számos hasznos függvénykönyvtár tartozik, melyek a mérési feladatok megvalósítását nagymértékben megkönnyítik. A Python nyelv egyik rendkívül kényelmes funkciója a beépített package manager, amelynek segítségével az egyes könyvtárak automatikusan telepíthetők, telepítsük után pedig minden további beállítás nélkül használhatók. A Pythonhoz két ilyen package manager is tartozik, az egyik a Pip, amely a legtöbb telepíthető Python verzió mellé automatikusan települ, a másik pedig az Anaconda~\cite{conda}, ami a könyvtárkezelési funkciókon túl virtuális környezeteket is képes kezelni.
+
+A Python egyik legfontosabb függvénykönyvtára a Numpy, amely tömbök kezelésére, illetve számtalan numerikus algoritmus használatára ad lehetőséget. A Numpy funkcionalitását kiegészíti a MatplotLib, melynek segítségével különböző ábrákat készíthetünk a tömbjeinkről. Egy harmadik rendkívül hasznos könyvtárcsalád a scikit, ami számos tudományos számításhoz szükséges alkönyvtárt foglal össze. A sckit-image képek kezelésére, a scikit-learn gépi tanulás algoritmusok használatára, míg a scikit-fuzzy fuzzy logika használatára ad lehetőséget. Ezek a könyvtárak tulajdonképpen együttesen kiadják a Matlab funkcionalitásának jelentős részét.
+
+\section{PyTorch}
+
+A PyTorch~\cite{torchDoc,torchTut} a Facebook Research által fejlesztett Deep Learning keretrendszer, melyet a mérés során használni fogunk, így a következőkben röviden áttekintésre kerülnek a fontosabb koncepciók. A PyTorch egyik előnye a TensorFlow-val, Keras-szal szemben, hogy a hálózatot leíró gráf dinamikusan kerül létrehozásra, nincs fordítási szakasza a tanításnak – ez a kevesebb lépés mellett akár azt is lehetővé teszi számunkra, hogy a háló rétegeit tanítás közben változtassuk (mert az egyik hiperparaméterünk lehet a lineáris rétegek száma).
+
+A PyTorch alapja az akár GPU-n is futtatható tenzor típus, mely egy pratikus tagfüggvényekkel felvértezett, multidimenzionális tömböt megvalósító osztály – tehát felettébb alkalmas például képek tárolására is.
+
+Tenzorokon alapul a rétegeket/hálózatokat megvalósító Module osztály, melyből minden saját hálózatunknak örökölnie kell, így kerülnek regisztrálásra az előre-, ill. visszaterjesztést megvalósító függvényeink. Szerencsére nem kell a hibavisszaterjesztést kézzel megírni, a PyTorvh beépített automatikus differenciálásra képes modulja (autograd) megteszi ezt helyettünk.
+
+Fontos megjegyezni, hogy az automatikus differenciálás nem szimbolikus differenciálás (azaz nem az a célja, hogy paraméteresen felírja egy bonyolult összefüggés deriváltfüggvényét) és nem is numerikus differenciálás (tehát az sem cél, hogy iteratívan közelítsünk egy értéket, mert a kvantizálás/kerekítés jelentős eltérésekben nyilvánulhat meg). Automatikus differenciálás során egy számítási gráf segítségével, a láncszabályt alkalmazva vagyunk képesek, viszonylag jól skálázhatóan, parciális deriváltakat kiszámítani, ami feltétlenül szükséges gradiens-alapú tanulóalgoritmusok esetében.
+
+A PyTorch optim nevű almodulja tartalmazza a különböző, a tanítás során használt algoritmusokat, ezek közül nekünk most csak az SGD-re (stochastic gradient descent) lesz szükségünk. Az SGD objektum számára megadható a modell, a tanulási ráta (learning rate), a momentum, ill. van lehetőség normán alapuló regularizáció konfigurálására is.
+
+Ahhoz, hogy tanítani tudjunk egy hálózatot, a következő struktúrájú programot kell megvalósítanunk és iteratívan meghívnunk. A következőkben a PyTorch egyik kiegészítésének (Ignite) forráskódjából látható egy részlet, ami tömören magába foglalja a szükséges lépéseket – a mérésen ugyanezen lépések segítségével, de egy kicsit más struktúrában fogjuk a tanítást végezni.
+
+\begin{lstlisting}[language=Python]
+def _update(batch):
+	model.train()
+	optimizer.zero_grad()
+	x, y = _prepare_batch(batch, device=device)
+	y_pred = model(x)
+	loss = loss_fn(y_pred, y)
+	loss.backward()
+	optimizer.step()
+	return loss.item()
+\end{lstlisting}
+
+Részleteiben a következő történik: tudatnunk kell a programmal, hogy most tanítjuk a hálót (hogy pl. a dropout csak ilyen esetben kerüljön aktiválásra). Ezt követően a gradiensek előző értékét kell nulláznunk (ugyanis megtehetnénk, hogy valamihez még felhasználjuk, ezért nem történik automatikusan). Ahhoz, hogy a következő előreterjesztést véghez vihessük, elő kell készíteni a következő minibatchet (ezt a kódban egy saját függvény, \_prepare\_batch jelöli). Az előreterjesztés végrehajtása felettébb egyszerű, magának a modellnek adjuk át argumentumként a minibatchet. A hiba kiszámítása a következő lépés, ezt az általunk konfigurált hibafüggvény segítségével tehetjük meg, majd a hiba backward tagfüggvényét meghívva végrehajtjuk a hibavisszaterjesztést. Nagyon fontos az utolsó lépés az optimalizáló algoritmus (SGD) lépésének végrehajtása, így kerülnek a súlyok frissítésre.
+
+Számos gyakran használt adatbázis elérhető a torchvision modulból, ezek előkészítésére, ill. adat augmentációra is használható transzformációk is rendelkezésünkre állnak. Ezen felül van lehetőség DataLoader objektumok segítségével (torch.utils.data modul) az adatok betöltését automatizálni. Továbbá lehetőségünk van például a tanulási ráta automatikus megváltoztatására adott szabályrendszer szerint.
+
+\section{OpenCV}
+
+Az OpenCV~\cite{opencv} egy nyílt forráskódú számítógépes látás algoritmusokat tartalmazó függvénykönyvtár. Az OpenCV elsődleges nyelve a C++, azonban elérhetőek hozzá hivatalos wrapperek többek között Java és Python nyelven. Az OpenCV rengeteg hivatalosan támogatott algoritmust tartalmaz, melyen felül a külön letölthető Contrib modulban harmadik felek által kifejlesztett további funkciók is elérhetők.
+
+\chapter{Mérési feladatok}
+
+A mérés folyamán az alábbi feladatokat kell elvégezni:
+
+\begin{enumerate}
+\item Készítsen egy egyszerű néhány rétegből álló neurális háló architektúrát az \ref{tab:1}.~Táblázatban megadott paraméterek alapján.
+\item Készítsen eljárást egyszerű neurális háló tanítására a méréshez használt adatbázison.
+\item Végezzen el különböző tanításokat a \ref{tab:2}.~Táblázatban megadott hiperparaméterek alapján.
+\item Valósítson meg egy egyszerű közlekedési tábla detektáló és osztálozó algoritmust a mérésvezető által szolgáltatott képekre.
+\end{enumerate}
+
+\begin{table}[!htb]
+	\label{tab:1}
+	\centering
+	\begin{tabular}{| l | c | c | c |}
+		\hline
+		\textbf{Típus} & \textbf{Csatornák száma} & \textbf{Méret} & \textbf{Stride} \\ \hline \hline
+		Konvolúciós & $N_{CH}$ & $3\times 3$ & $1$ \\ \hline
+		Konvolúciós & $N_{CH}*2$ & $3\times 3$ & $2$ \\ \hline
+		Konvolúciós & $N_{CH}*2$ & $3\times 3$ & $1$ \\ \hline
+		Konvolúciós & $N_{CH}*4$ & $3\times 3$ & $2$ \\ \hline
+		Konvolúciós & $N_{CH}*4$ & $3\times 3$ & $1$ \\ \hline
+		Konvolúciós & $N_{CH}*8$ & $3\times 3$ & $2$ \\ \hline
+		Konvolúciós & $N_{CH}*8$ & $3\times 3$ & $1$ \\ \hline
+		Konvolúciós & $N_{CH}*16$ & $3\times 3$ & $2$ \\ \hline
+		Konvolúciós & $N_{CH}*16$ & $3\times 3$ & $1$ \\ \hline
+		Konvolúciós & $N_{CH}*32$ & $3\times 3$ & $2$ \\ \hline
+		Osztályozó & $55$ & $3\times 3$ & $1$ \\ \hline
+	\end{tabular}
+\caption{Az elkészítendő neurális háló architektúrája. Az osztályozó réteg lehet $1\times 1$ konvolúció, vagy Fully Connected.}
+\end{table}
+
+\begin{table}[!htb]
+\label{tab:2}
+\centering
+\begin{tabular}{| c | c | c | c | c |}
+	\hline
+	$N_{CH}$ & \textbf{LR} & \textbf{Eta\_min} & \textbf{Momentum} & \textbf{Decay} \\ \hline \hline
+	8 & 1e-1 & 1e-2 & 0.1 & 1e-4 \\ \hline
+	8 & 1e-1 & 1e-2 & 0.9 & 1e-3  \\ \hline
+	8 & 1 & 1e-2 & 0.9 & 1e-1  \\ \hline
+	8 & 1e-3 & 1e-4 & 0.9 & 1e-5  \\ \hline
+	16 & 1e-1& 1e-2 & 0.9 & 1e-5  \\ \hline
+\end{tabular}
+\caption{A Vizsgálandó hiperparaméter kombinációk.}
+\end{table}
+
+\chapter{Hasznos kódrészletek}
+
+Különböző rétegek létrehozása PyTorch környezeteben
+
+\begin{lstlisting}[language=Python]
+self.conv = nn.Conv2d(inplanes,planes,size,padding=size//2,stride=stride)
+self.bn = nn.BatchNorm2d(planes)
+\end{lstlisting}
+
+Rétegek meghívása
+
+\begin{lstlisting}[language=Python]
+out = F.relu(self.bn(self.conv(x)))
+\end{lstlisting}
+
+Térbeli dimenziók eldobása az osztályozó réteg után
+
+\begin{lstlisting}[language=Python]
+out = out.squeeze()
+\end{lstlisting}
+
+Adat augmentációs függvények
+
+\begin{lstlisting}[language=Python]
+transforms.RandomCrop(32, padding=4),
+transforms.RandomHorizontalFlip(),
+transforms.ColorJitter(brightness=0.25, contrast=0.25, saturation=0.25, hue=0.2),
+transforms.ToTensor(),
+transforms.Normalize((0.49139968, 0.48215827, 0.44653124),
+(0.24703233, 0.24348505, 0.26158768))
+\end{lstlisting}
+
+Különböző augmentációs módszerek összefűzése
+
+\begin{lstlisting}[language=Python]
+transform = transforms.Compose( <list of transforms> )
+\end{lstlisting}
+
+Adatbázis létrehozása
+
+\begin{lstlisting}[language=Python]
+trainSet = torchvision.datasets.CIFAR10(root=root, download=True,
+train=True/False, transform=transform)
+\end{lstlisting}
+
+Adat betöltő létrehozása
+
+\begin{lstlisting}[language=Python]
+trainLoader = torch.utils.data.DataLoader(trainSet, batch_size=128, shuffle=True, num_workers=2)
+\end{lstlisting}
+
+Költségfüggvény létrehozása
+
+\begin{lstlisting}[language=Python]
+criterion = nn.CrossEntropyLoss()
+criterion = nn.MultiLabelMarginLoss()
+\end{lstlisting}
+
+Optimalizáló módszer létrehozás
+
+\begin{lstlisting}[language=Python]
+optimizer = optim.SGD(net.parameters(), lr=0.1, momentum=0.9, nesterov=True, weight_decay=1e-4)
+\end{lstlisting}
+
+Tanulási ráta ütemező létrehozása
+
+\begin{lstlisting}[language=Python]
+scheduler = lr_scheduler.StepLR(optimizer,10)
+\end{lstlisting}
+
+Neurális háló módjainak állítása
+
+\begin{lstlisting}[language=Python]
+net.train()
+net.eval()
+\end{lstlisting}
+
+Progress bar készítése
+
+\begin{lstlisting}[language=Python]
+# Create progress bar
+bar = progressbar.ProgressBar(0, len(trainLoader), redirect_stdout=False)
+	# Inside the loop:
+	bar.update(i)
+# Upon finishing:
+bar.finish()
+\end{lstlisting}
+
+Tipikus tanításra használt epoch
+
+\begin{lstlisting}[language=Python]
+# Epoch loop
+for i, data in enumerate(trainLoader, 0):
+
+	# get the inputs
+	inputs, labels = data
+	
+	# Convert to cuda conditionally
+	if haveCuda:
+	inputs, labels = inputs.cuda(), labels.cuda()
+	
+	
+	# zero the parameter gradients
+	optimizer.zero_grad()
+	
+	# forward + backward + optimize
+	outputs = net(inputs)
+	loss = criterion(outputs, labels)
+	loss.backward()
+	optimizer.step()
+\end{lstlisting}
+
+Osztályozási pontosság számítása az adott minibatch esetén
+
+\begin{lstlisting}[language=Python]
+# Compute cumulative loss
+running_loss += loss.item()
+
+# Get class with max probability
+_, predicted = torch.max(outputs, 1)
+
+# Update number of total and correctly classified images
+total += labels.size(0)
+correct += predicted.eq(labels).sum().item()
+\end{lstlisting}
+
+Tanulási ráta ütemező léptetése
+
+\begin{lstlisting}[language=Python]
+scheduler.step()
+\end{lstlisting}
+
+Modell mentése
+
+\begin{lstlisting}[language=Python]
+torch.save(net, root + ‘/model.pth’)
+\end{lstlisting}
+
+OpenCV kép PyTorch tenzorrá történő konvertálása
+
+\begin{lstlisting}[language=Python]
+# BGR to RGB
+img2 = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+# Convert to PIL image
+pil_im = Image.fromarray(img2)
+# Apply transform function, unsqueeze and convert to cuda
+imageT = transform(pil_im).unsqueeze(0).cuda()
+\end{lstlisting}
+
+Küszöbözés
+
+\begin{lstlisting}[language=Python]
+_,binImage = cv2.threshold(gradImg,threshVal,255,cv2.THRESH_BINARY)
+\end{lstlisting}
+
+Kontúrok keresése
+
+\begin{lstlisting}[language=Python]
+contours, _ = cv2.findContours(binImage,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+\end{lstlisting}
+
+Maximum keresése
+
+\begin{lstlisting}[language=Python]
+maxidx = np.argmax([function(element) for element in list])
+\end{lstlisting}
+
+Kontúr területének számolása
+
+\begin{lstlisting}[language=Python]
+area = cv2.contourArea(cont)
+\end{lstlisting}
+
+Kontúr rajzolása
+
+\begin{lstlisting}[language=Python]
+cv2.drawContours(contImage,contours,index,255,-1)
+\end{lstlisting}
+
+
+
+\chapter{Ellenőrző kérdések}
+
+\begin{enumerate}
+\item Ismertesse röviden a Hinge és a Kereszt-entrópia költségfüggvényeket! Mi az előnyük/hátrányuk?
+\item Hogyan működik a gradiens módszer? Milyen fontos kiegészítései vannak?
+\item Mire való a backpropagation? Hogyan működik?
+\item Ismertesse egy konvolúciós háló és gyakori rétegei felépítését!
+\item Mi az a saliency? Hogyan állítható elő? Mi a guided backpropagation? Mi értelme van?
+\item Milyen módszerekkel kerülhető el az overfitting? Ismertesse ezeket egy-egy mondatban!
+\item Milyen módszerekkel javítható egy neurális háló konvergenciája? Ismertesse ezeket egy-egy mondatban!
+\item Ismertesse röviden a PyTorch könyvtárat! Milyen alapvető adattípusai, moduljai léteznek? Milyen szolgáltatásokat nyújt neurális hálók számára?
+\item Készítsen egy egyszerű szkriptet Python nyelven: 
+\begin{enumerate}
+\item Töltse be a torch könyvtár nn nevű modulját!
+\item Definiáljon egy új, MyNet nevű osztályt, melynek ősosztálya az nn.Module
+\item Az osztály konstruktorában hozzon létre egy mult nevű tagváltozót, értéke legyen 5.
+\item Definiáljon egy forward nevű tagfüggvényt, melynek bemeneti paramétere x, és a mult nevű tagváltozóval szorozza meg, az eredményt pedig adja vissza.
+\end{enumerate}
+\item Hogyan néz ki egyetlen tanulási ciklus PyTorch-ban? (Pszeudó kód elég)
+\end{enumerate}
+
+
+\printbibliography
+
+\end{document}
+
