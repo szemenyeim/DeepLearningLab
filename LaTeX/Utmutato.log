@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99998 (MiKTeX 2.9.6500 64-bit) (preloaded format=xelatex 2018.11.20)  28 AUG 2019 16:09
+This is XeTeX, Version 3.14159265-2.6-0.99998 (MiKTeX 2.9.6500 64-bit) (preloaded format=xelatex 2018.11.20)  28 AUG 2019 17:38
 entering extended mode
 **./Utmutato.tex
 (Utmutato.tex
@@ -1885,7 +1885,7 @@ LaTeX Warning: Reference `tab:2' on page 8 undefined on input line 339.
 ] [10] [11]
 5. fejezet.
 
-Overfull \hbox (3.55827pt too wide) in paragraph at lines 574--575
+Overfull \hbox (3.55827pt too wide) in paragraph at lines 581--582
 []\TU/pcr/m/n/12 Definiáljon egy új, MyNet nevű osztályt, melynek ősosztálya az
  nn.Module 
  []
@@ -1909,11 +1909,11 @@ See the caption package documentation for explanation.
 Package caption Warning: Unused \captionsetup[figure] on input line 150.
 See the caption package documentation for explanation.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 584.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 584.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 591.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 591.
 (Utmutato.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 584.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 584.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 591.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 591.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
@@ -1924,13 +1924,13 @@ LaTeX Warning: There were undefined references.
 Package logreq Info: Writing requests to 'Utmutato.run.xml'.
 \openout1 = `Utmutato.run.xml'.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 584.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 591.
  ) 
 Here is how much of TeX's memory you used:
- 41477 strings out of 427835
- 780400 string characters out of 3152453
- 1323538 words of memory out of 3000000
- 44943 multiletter control sequences out of 15000+200000
+ 41491 strings out of 427835
+ 780562 string characters out of 3152453
+ 1321538 words of memory out of 3000000
+ 44957 multiletter control sequences out of 15000+200000
  542678 words of font info for 89 fonts, out of 3000000 for 9000
  1328 hyphenation exceptions out of 8191
  62i,12n,77p,10414b,5344s stack positions out of 5000i,500n,10000p,200000b,50000s
