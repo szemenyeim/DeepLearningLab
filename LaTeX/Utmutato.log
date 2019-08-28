@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99998 (MiKTeX 2.9.6500 64-bit) (preloaded format=xelatex 2018.11.20)  28 AUG 2019 17:38
+This is XeTeX, Version 3.14159265-2.6-0.99998 (MiKTeX 2.9.6500 64-bit) (preloaded format=xelatex 2018.11.20)  28 AUG 2019 20:02
 entering extended mode
 **./Utmutato.tex
 (Utmutato.tex
@@ -1885,7 +1885,7 @@ LaTeX Warning: Reference `tab:2' on page 8 undefined on input line 339.
 ] [10] [11]
 5. fejezet.
 
-Overfull \hbox (3.55827pt too wide) in paragraph at lines 581--582
+Overfull \hbox (3.55827pt too wide) in paragraph at lines 580--581
 []\TU/pcr/m/n/12 Definiáljon egy új, MyNet nevű osztályt, melynek ősosztálya az
  nn.Module 
  []
@@ -1909,11 +1909,11 @@ See the caption package documentation for explanation.
 Package caption Warning: Unused \captionsetup[figure] on input line 150.
 See the caption package documentation for explanation.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 591.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 591.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 590.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 590.
 (Utmutato.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 591.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 591.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 590.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 590.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
@@ -1924,7 +1924,7 @@ LaTeX Warning: There were undefined references.
 Package logreq Info: Writing requests to 'Utmutato.run.xml'.
 \openout1 = `Utmutato.run.xml'.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 591.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 590.
  ) 
 Here is how much of TeX's memory you used:
  41491 strings out of 427835
