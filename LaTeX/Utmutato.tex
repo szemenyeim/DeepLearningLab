@@ -303,7 +303,7 @@ A PyTorch alapja az akár GPU-n is futtatható tenzor típus, mely egy pratikus 
 
 Tenzorokon alapul a rétegeket/hálózatokat megvalósító Module osztály, melyből minden saját hálózatunknak örökölnie kell, így kerülnek regisztrálásra az előre-, ill. visszaterjesztést megvalósító függvényeink. Szerencsére nem kell a hibavisszaterjesztést kézzel megírni, a PyTorvh beépített automatikus differenciálásra képes modulja (autograd) megteszi ezt helyettünk.
 
-Fontos megjegyezni, hogy az automatikus differenciálás nem szimbolikus differenciálás (azaz nem az a célja, hogy paraméteresen felírja egy bonyolult összefüggés deriváltfüggvényét) és nem is numerikus differenciálás (tehát az sem cél, hogy iteratívan közelítsünk egy értéket, mert a kvantizálás/kerekítés jelentős eltérésekben nyilvánulhat meg). Automatikus differenciálás során egy számítási gráf segítségével, a láncszabályt alkalmazva vagyunk képesek, viszonylag jól skálázhatóan, parciális deriváltakat kiszámítani, ami feltétlenül szükséges gradiens-alapú tanulóalgoritmusok esetében.
+Fontos megjegyezni, hogy az automatikus differenciálás nem szimbolikus differenciálás (azaz nem az a célja, hogy paraméteresen felírja egy bonyolult összefüggés deriváltfüggvényét) és nem is numerikus differenciálás (tehát az sem cél, hogy iteratívan közelítsünk egy értéket, mert a kvantálás/kerekítés jelentős eltérésekben nyilvánulhat meg). Automatikus differenciálás során egy számítási gráf segítségével, a láncszabályt alkalmazva vagyunk képesek, viszonylag jól skálázhatóan, parciális deriváltakat kiszámítani, ami feltétlenül szükséges gradiens-alapú tanulóalgoritmusok esetében.
 
 A PyTorch optim nevű almodulja tartalmazza a különböző, a tanítás során használt algoritmusokat, ezek közül nekünk most csak az SGD-re (stochastic gradient descent) lesz szükségünk. Az SGD objektum számára megadható a modell, a tanulási ráta (learning rate), a momentum, ill. van lehetőség normán alapuló regularizáció konfigurálására is.
 
@@ -337,7 +337,7 @@ A mérés folyamán az alábbi feladatokat kell elvégezni:
 \item Készítsen egy egyszerű néhány rétegből álló neurális háló architektúrát az \ref{tab:1}.~Táblázatban megadott paraméterek alapján.
 \item Készítsen eljárást egyszerű neurális háló tanítására a méréshez használt adatbázison.
 \item Végezzen el különböző tanításokat a \ref{tab:2}.~Táblázatban megadott hiperparaméterek alapján.
-\item Valósítson meg egy egyszerű közlekedési tábla detektáló és osztálozó algoritmust a mérésvezető által szolgáltatott képekre.
+\item Valósítson meg egy egyszerű közlekedési tábla detektáló és osztályozó algoritmust a mérésvezető által szolgáltatott képekre.
 \end{enumerate}
 
 \begin{table}[!htb]
@@ -548,7 +548,7 @@ Kép átméretezése
 cv2.resize(img,(32,32))
 \end{lstlisting}
 
-Numpy - torch konverzió és deimenziók cserélése
+Numpy - torch konverzió és dimenziók cserélése
 
 \begin{lstlisting}[language=Python]
 imgROI = torch.Tensor(imgROI)
@@ -571,7 +571,6 @@ cv2.putText(img,className,(x1,y1-10),cv2.FONT_HERSHEY_COMPLEX_SMALL,1.0,(0,255,0
 \item Hogyan működik a gradiens módszer? Milyen fontos kiegészítései vannak?
 \item Mire való a backpropagation? Hogyan működik?
 \item Ismertesse egy konvolúciós háló és gyakori rétegei felépítését!
-\item Mi az a saliency? Hogyan állítható elő? Mi a guided backpropagation? Mi értelme van?
 \item Milyen módszerekkel kerülhető el az overfitting? Ismertesse ezeket egy-egy mondatban!
 \item Milyen módszerekkel javítható egy neurális háló konvergenciája? Ismertesse ezeket egy-egy mondatban!
 \item Ismertesse röviden a PyTorch könyvtárat! Milyen alapvető adattípusai, moduljai léteznek? Milyen szolgáltatásokat nyújt neurális hálók számára?
