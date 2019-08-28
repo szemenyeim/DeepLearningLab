@@ -405,7 +405,7 @@ transforms.RandomHorizontalFlip(),
 transforms.ColorJitter(brightness=0.25, contrast=0.25, saturation=0.25, hue=0.2),
 transforms.ToTensor(),
 transforms.Normalize((0.49139968, 0.48215827, 0.44653124),
-(0.24703233, 0.24348505, 0.26158768))
+					(0.24703233, 0.24348505, 0.26158768))
 \end{lstlisting}
 
 Különböző augmentációs módszerek összefűzése
@@ -475,7 +475,7 @@ for i, data in enumerate(trainLoader, 0):
 	
 	# Convert to cuda conditionally
 	if haveCuda:
-	inputs, labels = inputs.cuda(), labels.cuda()
+		inputs, labels = inputs.cuda(), labels.cuda()
 	
 	
 	# zero the parameter gradients
@@ -488,20 +488,6 @@ for i, data in enumerate(trainLoader, 0):
 	optimizer.step()
 \end{lstlisting}
 
-Osztályozási pontosság számítása az adott minibatch esetén
-
-\begin{lstlisting}[language=Python]
-# Compute cumulative loss
-running_loss += loss.item()
-
-# Get class with max probability
-_, predicted = torch.max(outputs, 1)
-
-# Update number of total and correctly classified images
-total += labels.size(0)
-correct += predicted.eq(labels).sum().item()
-\end{lstlisting}
-
 Tanulási ráta ütemező léptetése
 
 \begin{lstlisting}[language=Python]
@@ -511,7 +497,7 @@ scheduler.step()
 Modell mentése
 
 \begin{lstlisting}[language=Python]
-torch.save(net, root + ‘/model.pth’)
+torch.save(net, root + '/model.pth')
 \end{lstlisting}
 
 OpenCV kép PyTorch tenzorrá történő konvertálása
@@ -547,7 +533,7 @@ contours, _ = cv2.findContours(binImage,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPL
 Lista komprehenzió
 
 \begin{lstlisting}[language=Python]
-outList = [function(element) for element in list]
+outList = [function(element) for element in list if condition]
 \end{lstlisting}
 
 Képrészlet kivágása (hard copy)
@@ -560,6 +546,13 @@ Kép átméretezése
 
 \begin{lstlisting}[language=Python]
 cv2.resize(img,(32,32))
+\end{lstlisting}
+
+Numpy - torch konverzió és deimenziók cserélése
+
+\begin{lstlisting}[language=Python]
+imgROI = torch.Tensor(imgROI)
+permuted = imgROI.permute(2,0,1)
 \end{lstlisting}
 
 Téglalap rajzolása és kiírás
