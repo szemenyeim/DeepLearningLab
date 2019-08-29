@@ -53,9 +53,8 @@ if __name__ == "__main__":
         # Create progress bar
 
         # Epoch loop
-            # get the inputs
 
-            # Convert to cuda conditionally
+            # Convert inputs and labels to cuda conditionally
 
             # zero the parameter gradients
 
@@ -89,9 +88,8 @@ if __name__ == "__main__":
         # Create progress bar
 
         # Epoch loop
-            # get the inputs
 
-            # Convert to cuda conditionally
+            # Convert inputs and labels to cuda conditionally
 
             # forward
 
