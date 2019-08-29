@@ -79,14 +79,11 @@ if __name__ == "__main__":
         bar = progressbar.ProgressBar(0, len(trainLoader), redirect_stdout=False)
 
         # Epoch loop
-        for i, data in enumerate(trainLoader, 0):
-            # get the inputs
-            inputs, labels = data
+        for i, (inputs, labels) in enumerate(trainLoader, 0):
 
-            # Convert to cuda conditionally
+            # Convert inputs and labels to cuda conditionally
             if haveCuda:
                 inputs, labels = inputs.cuda(), labels.cuda()
-
 
             # zero the parameter gradients
             optimizer.zero_grad()
@@ -129,11 +126,9 @@ if __name__ == "__main__":
         bar = progressbar.ProgressBar(0, len(testLoader), redirect_stdout=False)
 
         # Epoch loop
-        for i, data in enumerate(testLoader, 0):
-            # get the inputs
-            inputs, labels = data
+        for i, (inputs, labels) in enumerate(testLoader, 0):
 
-            # Convert to cuda conditionally
+            # Convert inputs and labels to cuda conditionally
             if haveCuda:
                 inputs, labels = inputs.cuda(), labels.cuda()
 
