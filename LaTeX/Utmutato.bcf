@@ -1926,13 +1926,9 @@
   <bcf:section number="0">
     <bcf:citekey order="1">szgl</bcf:citekey>
     <bcf:citekey order="2">pycharm</bcf:citekey>
-    <bcf:citekey order="3">gist</bcf:citekey>
-    <bcf:citekey order="4">smart1</bcf:citekey>
-    <bcf:citekey order="4">smart2</bcf:citekey>
-    <bcf:citekey order="5">conda</bcf:citekey>
-    <bcf:citekey order="6">torchDoc</bcf:citekey>
-    <bcf:citekey order="6">torchTut</bcf:citekey>
-    <bcf:citekey order="7">opencv</bcf:citekey>
+    <bcf:citekey order="3">conda</bcf:citekey>
+    <bcf:citekey order="4">torchDoc</bcf:citekey>
+    <bcf:citekey order="4">torchTut</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="none">
