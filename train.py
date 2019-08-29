@@ -19,7 +19,7 @@ if __name__ == "__main__":
         torch.manual_seed(1)
 
     # path to dataset
-    root = "E:/Traffic/trafficSigns" if sys.platform == 'win32' else "./data"
+    root = "D:/Datasets/Traffic/trafficSigns" if sys.platform == 'win32' else "./data"
 
     trRoot = root+"/trainFULL"
     teRoot = root+"/testFULL"
