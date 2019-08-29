@@ -73,9 +73,9 @@
 % Main variables
 %--------------------------------------------------------------------------------------
 \newcommand{\vikauthor}{Szemenyei Márton}
-\newcommand{\viktitle}{M8 – Osztályozás mély neurális hálókkal}
+\newcommand{\viktitle}{M9 – Osztályozás mély neurális hálókkal}
 \newcommand{\vikdept}{Irányítástechnika és Informatika Tanszék}
-\newcommand{\vikdoktipus}{Irányítástechnika és Képfeldolgozás Laboratórium}
+\newcommand{\vikdoktipus}{Irányítástechnika és Képfeldolgozás Laboratórium 1.}
 \newcommand{\viksubtitle}{Mérési Útmutató}
 
 %--------------------------------------------------------------------------------------
@@ -205,6 +205,7 @@ aboveskip=10pt}
 \singlespacing
 \tableofcontents\thispagestyle{fancy}
 \titleformat{\chapter}[hang]{\Huge\bfseries}{\thechapter\hsp}{0pt}{\Huge\bfseries}
+\onehalfspacing
 
 \chapter{Neurális hálók}
 
@@ -217,79 +218,6 @@ A neurális hálózatokról és azok tanításáról bővebben a Számítógépe
 \chapter{A mérés környyezete}
 
 A mérés során a \emph{PyCharm} elnevezésű IDE áll rendelkezésre, amely rendkívül sokoldalú szolgáltatásokkal könnyíti meg a szoftverfejlesztést, például konfigurálható automatikus formázási lehetőségek állnak rendelkezésünkre. További részletekért érdemes lehet a JetBrains ide vonatkozó weboldalát~\cite{pycharm} felkeresni. Függvények, objektumok esetében a \textbf{\textit{Ctrl+P}} billentyűkombináció pop-up segítségként szolgálva mutatja nekünk a paramétereket. A mérés során használt programnyelv a Python 3-as verziója lesz.
-
-\section{A Python nyelv}
-
-A Python programnyelv egy \textbf{\textit{interpretált szkriptnyelv}} (a saját bytekódját hajtja végre), mely alapvetően az \emph{objektumorientált} paradigma által vezérelve került kialakításra. Jelenleg kétféle, kismértékben eltérő főverziója érhető el, ezek közül a mérésen a 3-as verziót használjuk majd.
-
-Az OOP szemlélet olyannyira központi szerepet tölt be Pythonban, hogy minden változó objektumnak tekinthető – ami azt jelenti, hogy az integer és float típusok is objektumok. A nyelv számára jelentős hátrány adatintenzív számítási feladatok elvégzésekor ennek ténye, ugyanis arról beszélünk, hogy a Python \textbf{\textit{nem rendelkezik natív számtípussal}}. Nem véletlen, hogy a hatékony modulok alacsonyabb szintű nyelveken nyugszanak, így a következő alfejezetben ismertetett PyTorch is.
-
-További nem szokványos jellemzője a nyelvnek, hogy \textbf{\textit{nem erősen típusos}}, a változónevekhez futási időben rendelődik hozzá a referált objektum (azaz egy \textbf{\textit{változónév}} igazából egy referens, vagyis adott \textbf{\textit{példányra mutató referenciát}} tartalmaz). Habár Pythonban a referenciák teljesen úgy viselkednek, mint a változók (vagyis semmilyen szintaktikai kiegészítésre nincs szükség, még argumentumok átadása esetében sem, mint ahogy azt C++-ban láttuk). (A félreértések elkerülése végett fontos szem előtt tartani, hogy amennyiben a segédletben a továbbiakban változó szerepel, akkor is igazából referencia van a háttérben, ezért hangsúlyozott általában, hogy nem a változó, hanem a változónév tartalmazza az objektumra mutató referenciát.)
-
-Vagyis lehetőség van arra, hogy egy referenshez (változónévhez) a programban különböző típusú objektumokat rendeljünk hozzá – ez teljesen logikusnak tűnik, ha belegondolunk abba, hogy a „Pythonban minden objektum” korábbi kijelentés lényegében azt sejteti, hogy minden az objektum ősosztály leszármazottja. A referenciák kezelése referenciaszámláló segítségével történik – a koncepció analóg a például C++-ban megtalálható \emph{shared\_ptr} típus esetén használttal.
-
-Pythonban nincsen továbbá pointer sem, az argumentumok átadása \textbf{\textit{referencia szerint}} történik. Itt azonban meg kell különböztetnünk az objektumokat az alapján, hogy módosíthatóak-e. A következőket érdemes alaposan átgondolni, különben hibás működésű programot kaphatunk.
-
-Kétféle objektumtípus létezik, \textbf{\textit{módosítható}} (mutable), ill. \textbf{\textit{nem módosítható}} (immutable). Nem módosíthatóak többek között az egyszerű adattípusok (POD, plain old data), mint az egész vagy lebegőpontos számok, valamint a sztringek. Habár a gondolatmenet e megfontolás mögött elsőre furcsának tűnik, a következőképpen magyarázható: minden adott szám vagy szöveg egyedi, vagyis ha pl. két változóhoz hozzárendeljük az 5 értéket, akkor a kettő tartalma egymással teljesen azonos, ha az egyiket megváltoztatjuk, akkor az már egy másik objektum lesz: nem egy tagváltozót módosítunk, hanem magát az objektumot teljes mértékben és kizárólagosan azonosító elemet. Talán érdemes a fordított programnyelvekből egy szemléletes példát átgondolni: a fordító ugyanolyan értékeket helyettesít be a gépi kódba (érdeklődők számára: a Pythonnak esetében is elérhető egyfajta disassembly a dis modul segítségével).
-
-Módosítható lényegében minden egyéb típus, így a Pythonba beépített konténer jellegű típusok, mint list, dict (ezek különlegessége, hogy nem csak egy típust képesek egyidejűleg magukba foglalni, hanem bármilyen objektumot), de a saját osztályok példányai is ide tartoznak. Ebben az esetben a módosítás nem eredményezi új objektum létrehozását. A tuple egy különleges eset, ugyanis ez a konténer típus immutable, azonban, ha mutable objektumokat tartalmaz, akkor azok módosulhatnak.
-
-Ezek a különbségek objektumok másolása esetében is jelentkezik. Fontos különbség, hogy Pythonban alapvetően a hozzárendelés (assignment) igazából C++-szemszögből inkább a copy constructor hívásának feleltethető meg. Mutable esetben az eredeti objektumhoz tartozó referenciszámláló kerül megnövelésre, módosítás esetén pedig új objektum jön létre, értelemszerűen ugyanarra az értéket tartalmazó változók egyikének megváltoztatása nem hat ki a többire. Immutable esetben azonban nem ilyen egyszerű a helyzet: mivel alapvetően referenciákat tartalmaznak a változónevek, amelyek módosítható objektumokat referálnak, így ugyanarra a példányra mutató referenciák bármelyikének módosítása változást eredményez a referált egy darab objektum esetében, vagyis bármelyik változóval hivatkozunk rá, a változás mindegyik esetben látható lesz számunkra. Az ilyen jellegű másolást shallow copy-nak szokás nevezni, melynek párja a deepcopy (elérhető a copy modulban), ami Pythonban immutable esetben is új példányt hoz létre, így az új objektum független lesz a többitől.
-
-Paraméterek átadása hozzárendeléssel történik, ez azonban nagy objektumok esetében sem okoz komolyabb problémát, ugyanis a referenciák kerülnek csak másolásra. Ez a láthatóságra a következőképpen van hatással: ha a paraméter immutable és a függvénytörzsben módosításra kerül, akkor lényegében a függvény scope-jában egy ideiglenes objektum kerül létrehozásra, a függvényből visszatérve a változó megtartja eredeti értékét. Immutable esetben, mivel a referencia kerül másolásra, az objektumok másolásánál láttuk, hogy az általuk referált objektumok módosítása érvényes, bármelyik referenciájával hivatkozunk is rá, így a függvény visszatérését követően az objektum már módosult értékével használható.
-Rendkívül hasznos tulajdonság, hogy a Python gyakorlatilag bármennyi visszatérési értéket támogat.
-A nyelvi koncepciók ismertetése után a következőkben a szintaktikai részletek kerülnek összefoglalásra.
-
-Pythonban a programkód tagolása indentálással történik, vagyis a kódblokkokat egy tabulátorral beljebb kell kezdeni (ha valamilyen okból üres függvényt, ciklust, stb, kívánunk írni, akkor is kell egy indentált blokk, ezt egy sorban, a pass utasítással valósíthatjuk meg, ami nem hajt végre semmilyen műveletet).
-
-Modulok betöltésére az import utasítással van lehetőségünk, mégpedig kétféle módon: importálhatjuk a teljes modult, ekkor a modul minden osztálya/függvénye a modul neve után írt „.” (pont) operátorral érhető el, ha from-ot használunk, lehetőségünk van csak egyes elemeket betölteni, ekkor a modul nevét nem kell az importált elem neve elé kiírni.
-
-\begin{lstlisting}[language=Python]
-import module
-m = module.MyClass()
-
-import module as md
-m = md.MyClass()
-
-from module import MyClass, my_func
-m = myClass()
-\end{lstlisting}
-
-Függvények a következő módon hozhatók létre:
-
-\begin{lstlisting}[language=Python]
-def func(x):
-x += 1
-print("x = ", x)
-\end{lstlisting}
-
-A def kulcsszó után a függvény neve, majd a paraméterlista kerül megadásra, azt követően pedig az indentált függvénytörzs következik.
-
-Osztályok esetében sem bonyolult a konstrukció:
-
-\begin{lstlisting}[language=Python]
-class my_class(object):
-def __init__(self):
-self.x = 5
-\end{lstlisting}
-
-Pythonban a konstruktort az \_\_init\_\_ (2-2 aláhúzással) rutin testesíti meg, mint látható, a tagfüggvények is majdnem teljesen megegyeznek az általános függvényekkel, azzal a különbséggel, hogy az első argumentum mindenképpen az adott példányra vonatkozik (mint ahogy a this C++-ban) – ezt konvenció szerint self-nek szoktuk nevezni.
-Öröklés esetén nincs más teendőnk, mint az object osztály helyett megadni az általunk választott ősosztályt, majd a konstruktorban meghívni az ősosztály konstruktorát a super, általánosan az ősosztályra használható objektum segítségével.
-
-\begin{lstlisting}[language=Python]
-class base_class(object):
-def __init__(self):
-print("I am Groot")
-\end{lstlisting}
-
-\begin{lstlisting}[language=Python]
-class inherited_class(base_class):
-def __init__(self):
-super().__init__()
-print("I am inherited")
-\end{lstlisting}
-
-Aki mélyebben érdeklődik a Python nyelv iránt, annak érdemes felkeresnie további példaprogramokat és kódrészleteket~\cite{gist}, valamint a TMIT SmartLab blogjának bejegyzéseit~\cite{smart1,smart2} (angolul). 
 
 A Python programnyelvhez számos hasznos függvénykönyvtár tartozik, melyek a mérési feladatok megvalósítását nagymértékben megkönnyítik. A Python nyelv egyik rendkívül kényelmes funkciója a beépített package manager, amelynek segítségével az egyes könyvtárak automatikusan telepíthetők, telepítsük után pedig minden további beállítás nélkül használhatók. A Pythonhoz két ilyen package manager is tartozik, az egyik a Pip, amely a legtöbb telepíthető Python verzió mellé automatikusan települ, a másik pedig az Anaconda~\cite{conda}, ami a könyvtárkezelési funkciókon túl virtuális környezeteket is képes kezelni.
 
@@ -325,9 +253,135 @@ Részleteiben a következő történik: tudatnunk kell a programmal, hogy most t
 
 Számos gyakran használt adatbázis elérhető a torchvision modulból, ezek előkészítésére, ill. adat augmentációra is használható transzformációk is rendelkezésünkre állnak. Ezen felül van lehetőség DataLoader objektumok segítségével (torch.utils.data modul) az adatok betöltését automatizálni. Továbbá lehetőségünk van például a tanulási ráta automatikus megváltoztatására adott szabályrendszer szerint.
 
-\section{OpenCV}
+\section{Haladó Python}
 
-Az OpenCV~\cite{opencv} egy nyílt forráskódú számítógépes látás algoritmusokat tartalmazó függvénykönyvtár. Az OpenCV elsődleges nyelve a C++, azonban elérhetőek hozzá hivatalos wrapperek többek között Java és Python nyelven. Az OpenCV rengeteg hivatalosan támogatott algoritmust tartalmaz, melyen felül a külön letölthető Contrib modulban harmadik felek által kifejlesztett további funkciók is elérhetők.
+A korábbi mérés(ek) során megismerkedtünk a Python nyelvvel, a jelen mérés során azonban a nyelv bonyolultabb funkcióira is szükségünk lesz. Az alábbiakban tekintsük át legfontosabb adattípusokat és nyelvi elemeket.
+
+A Python legfontosabb konténer osztályai a list és a tuple. Ezek közt a különbség, hogy a tuple immutable, vagyis nem módosítható. Létrehozásuk és az elemeik elérése az alábbi módon történhet:
+
+\begin{lstlisting}[language=Python]
+myList = ["wow","you","can","mix",2,"or","more","different","types"]
+myTuple = ("wow","you","can","mix",2,"or","more","different","types")
+myList[4] = "two" # 2 becomes 'two'
+myTuple[4] = "two" # Error
+\end{lstlisting}
+
+Érdemes tudni, hogy habár (1D) listák esetében a $+$ operátor értelmezett, ez a listákat összefűzi, nem pedig összeadja.
+
+\begin{lstlisting}[language=Python]
+myList = [1,2]+[3,4]
+>>> [1,2,3,4] # Not [4,5]
+\end{lstlisting}
+
+Listákhoz új elemet az alábbi módon lehet hozzáadni:
+
+\begin{lstlisting}[language=Python]
+myList = [1,2,3,4]
+myList.append(5) # [1,2,3,4,5]
+\end{lstlisting}
+
+Listák, vagy Tuple-ök elemein az alábbi módokon lehet végigiterálni:
+
+\begin{lstlisting}[language=Python]
+for elem in myList:
+print(elem)
+
+for i, elem in enumerate(myList):
+print(i,elem) # i is the index
+\end{lstlisting}
+
+Adott esetben egyszerre több (egyenlő elemszámú) listán is végigiterálhatunk egyidejűleg:
+
+\begin{lstlisting}[language=Python]
+if len(list1) == len(list2):
+for (elem1,elem2) in zip(list1,list2):
+print(elem1,elem2)
+\end{lstlisting}
+
+Érdemes megjegyezni, hogy az 'in' kulcsszó feltételeknél is használható annak eldöntésére, hogy egy adott érték szerepel-e a listában:
+
+\begin{lstlisting}[language=Python]
+myList = [1,2,3,4]
+if 1 in myList:
+print("1 is in the list")
+if 5 not in myList:
+print("5 is not in the list")
+\end{lstlisting}
+
+A Python programnyelv támogat bizonyos funkcionális programozási elemeket is, melyek közül az egyik leghasznosabb az úgynevezett list comprehension. Ezt akkor használhatjuk, ha szeretnénk egy lista minden elemén elvégezni egy műveletet és ezek eredményeiből egy újabb listát készíteni. Az alábbi példa egy lista minden elemét négyzetre emeli:
+
+\begin{lstlisting}[language=Python]
+myList = [1,2,3,4]
+mySqrList = [elem**2 for elem in myList] # [1,4,9,16]
+\end{lstlisting}
+
+A list comprehension a korábban említett for ciklus változatokkal (zip, enumerate) is használható, az új lista elemének kiszámolásához pedig bármilyen érvényes Python kód írható. Ezen felül a kifejezés feltétellel is kiegészíthető:
+
+\begin{lstlisting}[language=Python]
+myList = [9,-16,25,-4]
+mySqrtList = [sqrt(elem) for elem in myList if elem >= 0] # [3,5]
+\end{lstlisting}
+
+\section{Haladó NumPy}
+
+Fontos megjegyezni, hogy a Python list és tuple osztályok különböző típusú objektumokat tartalmazhatnak, vagyis egy lista egyik eleme lehet egy másik lista. Ez lehetőséget nyújt arra, hogy a lista osztályt N-dimenziós tömbként használjuk, azonban egy listákat tartalmazó listában az egyes részlisták különböző hosszúak és típusúak lehetnek, ami hagyományos tömböknél nem fordulhat elő. Éppen ezért méret- és típus konzisztens tömbök tárolására a NumPy array osztályt célszerű használni.
+
+A NumPy tömbök között definiált a $+$, $-$, $*$ és a $/$ művelete, azonban ezeket elemenként végzi, így a tömbök méretének kompatibilisnek kell lennie. A NumPy broadcasting szabályai alapján két tömb az alábbi feltételek teljesítése esetén kompatibilis méretű:
+
+\begin{enumerate}
+	\item A két tömb minden mérete megegyezik
+	\item Amelyik dimenzió mentén nem egyeznek meg a méretek, ott az egyik tömb mérete 1
+\end{enumerate}
+
+A tömbök méretét az alábbi módon ellenőrizhetjük:
+
+\begin{lstlisting}[language=Python]
+arr1.shape # [2,4,6]
+arr2.shape # [1,4,1] - Compatible
+arr3.shape # [3,4,6] - Incompatible
+\end{lstlisting}
+
+Bizonyos esetekben előfordulhat, hogy új elemet szeretnénk a tömbhöz adni, vagy két tömböt össze szeretnénk fűzni, amelyeket az alábbi módon tehetünk meg:
+
+\begin{lstlisting}[language=Python]
+extArr = np.append(arr,elem,dim)
+catArr = np.concatenate((arr1,arr2,...,arrn),dim)
+\end{lstlisting}
+
+A $dim$ változó azt adja meg, hogy melyik dimenzió mentén történjen a kiegészítés/összefűzés. Ha None értéket adunk meg (nem adjuk meg a paramétert), akkor a NumPy megpróbálja magától kitalálni.
+
+Gyakran előfordul, hogy egy általunk használt tömbben van egy extra dimenzió, aminek az értéke egy. Például, ha van egy 2D mátrixokból álló tömbünk, amelyiknek kivesszük egy elemét. Ez az extra dimenzió sok fejfájást tud okozni, mert ha konkatenálni, vagy mátrixokat szorozni szeretnénk, a NumPy nem megfelelő méret hibákat fog dobni. Ennek megoldására a squeeze parancs való.
+
+\begin{lstlisting}[language=Python]
+mtxArr.shape # [N,3,3] - N 3x3 matrices
+myMtx = mtxArr[i]
+myMtx.shape # [1,3,3]
+myMtx = mtxArr[i].squeeze()
+myMtx.shape # [3,3]
+\end{lstlisting}
+
+Előfordulhat az is, hogy a tömbjeink megfelelő méretűek, de valamilyen oknál fogva a dimenziók sorrendje eltér. Például képek esetén elterjedt konvenció a $H\times W\times Ch$ sorrend használata, a Deep Learning könyvtárak viszont a $Ch\times H\times W$ sorrendet preferálják. Erre megoldás a NumPy transpose függvény.
+
+\begin{lstlisting}[language=Python]
+myArr.shape # [N,3]
+np.transpose(myArr).shape # [3,N]
+
+# Több dimenzióban
+myImg.shape # [1080,1920,3]
+np.transpose(myImg,(2,0,1)).shape # [3,1080,1920]
+\end{lstlisting}
+
+Ezen felül érdemes még említeni, hogy a NumPy képes különböző lineáris algebrai műveletek elvégzésére, mint például a mátrixszorzás (amennyiben a dimenziók megfelelőek), valamint az invertálás:
+
+\begin{lstlisting}[language=Python]
+myMtx = np.array([[1,2,3],[4,5,6],[7,8,9]])
+myInv = np.linalg.inv(myMtx)
+
+myData = np.randn((50,3)) # 50 3D coordinates
+myTrData = np.matNum(myMtx,myData) # myTrData = myMtx*myData
+\end{lstlisting}
+
+Fontos megemlíteni, hogy a $numpy.ndarray$ típuson elvégezhető műveletek nagy része pontosan ugyanúgy működik $torch.tensor$ típuson is, bár esetenként ugyanaz a függvény más néven érhető el. A $numpy.transpose$ például $torch.permute$.
 
 \chapter{Mérési feladatok}
 
@@ -341,7 +395,6 @@ A mérés folyamán az alábbi feladatokat kell elvégezni:
 \end{enumerate}
 
 \begin{table}[!htb]
-	\label{tab:1}
 	\centering
 	\begin{tabular}{| l | c | c | c |}
 		\hline
@@ -356,13 +409,13 @@ A mérés folyamán az alábbi feladatokat kell elvégezni:
 		Konvolúciós & $N_{CH}*16$ & $3\times 3$ & $2$ \\ \hline
 		Konvolúciós & $N_{CH}*16$ & $3\times 3$ & $1$ \\ \hline
 		Konvolúciós & $N_{CH}*32$ & $3\times 3$ & $2$ \\ \hline
-		Osztályozó & $55$ & $3\times 3$ & $1$ \\ \hline
+		Osztályozó & $55$ & $1\times 1$ & $1$ \\ \hline
 	\end{tabular}
-\caption{Az elkészítendő neurális háló architektúrája. Az osztályozó réteg lehet $1\times 1$ konvolúció, vagy Fully Connected.}
+\caption{Az elkészítendő neurális háló architektúrája.}
+\label{tab:1}
 \end{table}
 
 \begin{table}[!htb]
-\label{tab:2}
 \centering
 \begin{tabular}{| c | c | c | c | c |}
 	\hline
@@ -374,6 +427,7 @@ A mérés folyamán az alábbi feladatokat kell elvégezni:
 	16 & 1e-1& 1e-2 & 0.9 & 1e-5  \\ \hline
 \end{tabular}
 \caption{A Vizsgálandó hiperparaméter kombinációk.}
+\label{tab:2}
 \end{table}
 
 \chapter{Hasznos kódrészletek}
@@ -401,8 +455,7 @@ Adat augmentációs függvények
 
 \begin{lstlisting}[language=Python]
 transforms.RandomCrop(32, padding=4),
-transforms.RandomHorizontalFlip(),
-transforms.ColorJitter(brightness=0.25, contrast=0.25, saturation=0.25, hue=0.2),
+transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1),
 transforms.ToTensor(),
 transforms.Normalize((0.49139968, 0.48215827, 0.44653124),
 					(0.24703233, 0.24348505, 0.26158768))
@@ -417,21 +470,19 @@ transform = transforms.Compose( <list of transforms> )
 Adatbázis létrehozása
 
 \begin{lstlisting}[language=Python]
-trainSet = torchvision.datasets.CIFAR10(root=root, download=True,
-train=True/False, transform=transform)
+dataSet = torchvision.datasets.ImageFolder(root=root, transform=transform)
 \end{lstlisting}
 
 Adat betöltő létrehozása
 
 \begin{lstlisting}[language=Python]
-trainLoader = torch.utils.data.DataLoader(trainSet, batch_size=128, shuffle=True, num_workers=2)
+dataLoader = torch.utils.data.DataLoader(trainSet, batch_size=512, shuffle=True, num_workers=4)
 \end{lstlisting}
 
 Költségfüggvény létrehozása
 
 \begin{lstlisting}[language=Python]
 criterion = nn.CrossEntropyLoss()
-criterion = nn.MultiLabelMarginLoss()
 \end{lstlisting}
 
 Optimalizáló módszer létrehozás
@@ -443,7 +494,7 @@ optimizer = optim.SGD(net.parameters(), lr=0.1, momentum=0.9, nesterov=True, wei
 Tanulási ráta ütemező létrehozása
 
 \begin{lstlisting}[language=Python]
-scheduler = lr_scheduler.StepLR(optimizer,10)
+scheduler = lr_scheduler.CosineAnnealingLR(optimizer,numEpoch,eta_min)
 \end{lstlisting}
 
 Neurális háló módjainak állítása
@@ -464,28 +515,48 @@ bar = progressbar.ProgressBar(0, len(trainLoader), redirect_stdout=False)
 bar.finish()
 \end{lstlisting}
 
-Tipikus tanításra használt epoch
+Dataloaderen történő iterálás:
 
 \begin{lstlisting}[language=Python]
 # Epoch loop
-for i, data in enumerate(trainLoader, 0):
+for i, (inputs,labels) in enumerate(trainLoader, 0):
+\end{lstlisting}
 
-	# get the inputs
-	inputs, labels = data
+CUDA konverzió
+
+\begin{lstlisting}[language=Python]
+if haveCuda:
+	inputs = inputs.cuda()
+\end{lstlisting}
 	
-	# Convert to cuda conditionally
-	if haveCuda:
-		inputs, labels = inputs.cuda(), labels.cuda()
+Optimizer kinullázása
 	
+\begin{lstlisting}[language=Python]
+optimizer.zero_grad()
+\end{lstlisting}
 	
-	# zero the parameter gradients
-	optimizer.zero_grad()
-	
-	# forward + backward + optimize
-	outputs = net(inputs)
-	loss = criterion(outputs, labels)
-	loss.backward()
-	optimizer.step()
+Forward
+
+\begin{lstlisting}[language=Python]
+outputs = net(inputs)
+\end{lstlisting}
+
+Költség
+
+\begin{lstlisting}[language=Python]
+loss = criterion(outputs, labels)
+\end{lstlisting}
+
+Backward
+
+\begin{lstlisting}[language=Python]
+loss.backward()
+\end{lstlisting}
+
+Egy lépés gradiens módszerrel
+
+\begin{lstlisting}[language=Python]
+optimizer.step()
 \end{lstlisting}
 
 Tanulási ráta ütemező léptetése
@@ -530,22 +601,16 @@ Kontúrok keresése
 contours, _ = cv2.findContours(binImage,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
 \end{lstlisting}
 
-Lista komprehenzió
-
-\begin{lstlisting}[language=Python]
-outList = [function(element) for element in list if condition]
-\end{lstlisting}
-
 Képrészlet kivágása (hard copy)
 
 \begin{lstlisting}[language=Python]
-img2 = img[y1:y2,x1:x2].copy()
+imgROI = img[y1:y2,x1:x2].copy()
 \end{lstlisting}
 
 Kép átméretezése
 
 \begin{lstlisting}[language=Python]
-cv2.resize(img,(32,32))
+imgROI = cv2.resize(imgROI,(32,32))
 \end{lstlisting}
 
 Numpy - torch konverzió és dimenziók cserélése
