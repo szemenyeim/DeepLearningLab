@@ -1,17 +1,17 @@
 \select@language {magyar} \boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
 \defcounter {refsection}{0}\relax 
-\select@language {magyar} \contentsline {chapter}{\numberline {1}Neurális hálók}{2}{chapter.1}% 
+\select@language {magyar} \contentsline {chapter}{\numberline {1}Neurális hálók}{2}{chapter.1}
 \defcounter {refsection}{0}\relax 
-\select@language {magyar} \contentsline {chapter}{\numberline {2}A mérés környyezete}{3}{chapter.2}% 
+\select@language {magyar} \contentsline {chapter}{\numberline {2}A mérés környyezete}{3}{chapter.2}
 \defcounter {refsection}{0}\relax 
-\select@language {magyar} \contentsline {section}{\numberline {2.1}PyTorch}{3}{section.2.1}% 
+\select@language {magyar} \contentsline {section}{\numberline {2.1}PyTorch}{3}{section.2.1}
 \defcounter {refsection}{0}\relax 
-\select@language {magyar} \contentsline {section}{\numberline {2.2}Haladó Python}{5}{section.2.2}% 
+\select@language {magyar} \contentsline {section}{\numberline {2.2}Haladó Python}{5}{section.2.2}
 \defcounter {refsection}{0}\relax 
-\select@language {magyar} \contentsline {section}{\numberline {2.3}Haladó NumPy}{6}{section.2.3}% 
+\select@language {magyar} \contentsline {section}{\numberline {2.3}Haladó NumPy}{6}{section.2.3}
 \defcounter {refsection}{0}\relax 
-\select@language {magyar} \contentsline {chapter}{\numberline {3}Mérési feladatok}{9}{chapter.3}% 
+\select@language {magyar} \contentsline {chapter}{\numberline {3}Mérési feladatok}{9}{chapter.3}
 \defcounter {refsection}{0}\relax 
-\select@language {magyar} \contentsline {chapter}{\numberline {4}Hasznos kódrészletek}{10}{chapter.4}% 
+\select@language {magyar} \contentsline {chapter}{\numberline {4}Hasznos kódrészletek}{10}{chapter.4}
 \defcounter {refsection}{0}\relax 
-\select@language {magyar} \contentsline {chapter}{\numberline {5}Ellenőrző kérdések}{13}{chapter.5}% 
+\select@language {magyar} \contentsline {chapter}{\numberline {5}Ellenőrző kérdések}{13}{chapter.5}
