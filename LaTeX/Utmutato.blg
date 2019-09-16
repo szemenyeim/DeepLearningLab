@@ -1,14 +1,14 @@
-[0] Config.pm:302> INFO - This is Biber 2.9
-[0] Config.pm:305> INFO - Logfile is 'Utmutato.blg'
-[20] biber-MSWIN64:313> INFO - === 
-[36] Biber.pm:371> INFO - Reading 'Utmutato.bcf'
-[95] Biber.pm:857> INFO - Found 5 citekeys in bib section 0
-[105] Biber.pm:3981> INFO - Processing section 0
-[114] Biber.pm:4154> INFO - Looking for bibtex format file 'bib.bib' for section 0
-[116] bibtex.pm:1479> INFO - LaTeX decoding ...
-[120] bibtex.pm:1305> INFO - Found BibTeX data source 'bib.bib'
-[134] UCollate.pm:68> INFO - Overriding locale 'hu-HU' defaults 'variable = shifted' with 'variable = non-ignorable'
-[134] UCollate.pm:68> INFO - Overriding locale 'hu-HU' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[134] Biber.pm:3809> INFO - Sorting list 'none/global//global/global' of type 'entry' with template 'none' and locale 'hu-HU'
-[140] bbl.pm:617> INFO - Writing 'Utmutato.bbl' with encoding 'UTF-8'
-[141] bbl.pm:720> INFO - Output to Utmutato.bbl
+[0] Config.pm:304> INFO - This is Biber 2.12
+[0] Config.pm:307> INFO - Logfile is 'Utmutato.blg'
+[41] biber-darwin:315> INFO - === Mon Sep 16, 2019, 08:03:31
+[65] Biber.pm:371> INFO - Reading 'Utmutato.bcf'
+[186] Biber.pm:889> INFO - Found 5 citekeys in bib section 0
+[210] Biber.pm:4093> INFO - Processing section 0
+[227] Biber.pm:4254> INFO - Looking for bibtex format file 'bib.bib' for section 0
+[228] bibtex.pm:1523> INFO - LaTeX decoding ...
+[236] bibtex.pm:1340> INFO - Found BibTeX data source 'bib.bib'
+[272] UCollate.pm:68> INFO - Overriding locale 'hu-HU' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[272] UCollate.pm:68> INFO - Overriding locale 'hu-HU' defaults 'variable = shifted' with 'variable = non-ignorable'
+[272] Biber.pm:3921> INFO - Sorting list 'none/global//global/global' of type 'entry' with template 'none' and locale 'hu-HU'
+[280] bbl.pm:636> INFO - Writing 'Utmutato.bbl' with encoding 'UTF-8'
+[282] bbl.pm:739> INFO - Output to Utmutato.bbl

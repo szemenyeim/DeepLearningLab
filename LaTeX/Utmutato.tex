@@ -378,7 +378,7 @@ myMtx = np.array([[1,2,3],[4,5,6],[7,8,9]])
 myInv = np.linalg.inv(myMtx)
 
 myData = np.randn((50,3)) # 50 3D coordinates
-myTrData = np.matNum(myMtx,myData) # myTrData = myMtx*myData
+myTrData = np.matMul(myMtx,myData) # myTrData = myMtx*myData
 \end{lstlisting}
 
 Fontos megemlíteni, hogy a $numpy.ndarray$ típuson elvégezhető műveletek nagy része pontosan ugyanúgy működik $torch.tensor$ típuson is, bár esetenként ugyanaz a függvény más néven érhető el. A $numpy.transpose$ például $torch.permute$.
