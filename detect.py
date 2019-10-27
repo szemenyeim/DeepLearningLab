@@ -30,45 +30,77 @@ classNames = ['Bump', 'Bumpy road', 'Bus stop', 'Children', 'Crossing (blue)', '
               'Parking', 'Priority', 'Road works', 'Roundabout', 'Slippery road', 'Stop', 'Traffic light', 'Train crossing',
               'Train crossing (no barrier)', 'Turn left', 'Turn right', 'Wild animals']
 
+def detectImage(img):
+
+    # Make hsv image
+
+    # Threshold using saturation and value
+
+    # Run a few iterations of closing
+
+    # Retrieve external contours
+
+    # Get bounding rects for contours larger than 1000 square pixels
+
+    # Iterate through bounding boxes
+
+        # Get corner points
+
+
+        # Cut out the box, resize it to 32x32 and convert it to RGB
+
+        # Convert to torch tensor, permute so that it is ch X h X w, and divide it by 255
+
+        # Normalize, aunsquueze and convert to cuda
+
+        # Forward
+
+        # Get predicted class
+
+        # Draw rectangle and write text
+
+    return img
+
 if __name__ == '__main__':
 
-    # Path for images
-    path = "./Images/"
+    cam = False
 
-    # Iterate through all images
-    for img_name in glob.glob1(path,"*.JPG"):
+    if cam:
+        cap = cv2.VideoCapture(0)
 
-        # Read and resize image to 1280x960
-
-        # Make hsv image
-
-        # Threshold using saturation and value
-
-        # Run a few iterations of closing
-
-        # Retrieve external contours
-
-        # Get bounding rects for contours larger than 1000 square pixels
-        ROIs = []
-
-        # Iterate through bounding boxes
-        for ROI in ROIs:
-            # Get corner points
-
-            # Cut out the box, resize it to 32x32 and convert it to RGB
-
-            # Convert to torch tensor, permute so that it is ch X h X w, and divide it by 255
-
-            # Normalize, unsquueze and convert to cuda
-
-            # Forward
-
-            # Get predicted class
-
-            # Draw rectangle and write text
-
-        # Show image
-        cv2.imshow("Image",img)
-        ret = cv2.waitKey(0)
-        if ret == 27:
+        if not cap.isOpened():
             exit(0)
+
+        while True:
+
+            ret,img = cap.read()
+            if not ret:
+                exit(0)
+
+            img = detectImage(img)
+
+            # Show image
+            cv2.imshow("Image", img)
+            ret = cv2.waitKey(0)
+            if ret == 27:
+                exit(0)
+
+    else:
+        # Path for images
+        path = "./Images/"
+
+        # Iterate through all images
+        for img_name in glob.glob1(path,"*.JPG"):
+
+            # Read and resize image to 1280x960
+            img = cv2.imread(path+img_name)
+            img = cv2.resize(img,(1280,960))
+
+            img = detectImage(img)
+
+            # Show image
+            cv2.imshow("Image",img)
+            ret = cv2.waitKey(0)
+            if ret == 27:
+                exit(0)
+
