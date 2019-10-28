@@ -76,6 +76,9 @@ if __name__ == "__main__":
         tr_corr = correct / total * 100
         print("Train epoch %d lr: %.3f loss: %.3f correct: %.2f" % (epoch + 1, scheduler.get_lr()[0], tr_loss, tr_corr))
 
+        return tr_corr,tr_loss
+
+
     # Validation function
     def val(epoch):
 

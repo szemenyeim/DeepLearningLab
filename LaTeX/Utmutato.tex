@@ -442,7 +442,7 @@ self.bn = nn.BatchNorm2d(planes)
 Rétegek meghívása
 
 \begin{lstlisting}[language=Python]
-out = F.relu(self.bn(self.conv(x)))
+out = self.bn(F.relu(self.conv(x)))
 \end{lstlisting}
 
 Térbeli dimenziók eldobása az osztályozó réteg után
@@ -599,6 +599,18 @@ Kontúrok keresése
 
 \begin{lstlisting}[language=Python]
 contours, _ = cv2.findContours(binImage,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+\end{lstlisting}
+
+Bounding box meghatározása (x,y,w,h)
+
+\begin{lstlisting}[language=Python]
+rect = cv2.boundingRect(contour)
+\end{lstlisting}
+
+Kontúr területe
+
+\begin{lstlisting}[language=Python]
+area = cv2.contourArea(contour)
 \end{lstlisting}
 
 Képrészlet kivágása (hard copy)
