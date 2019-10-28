@@ -6,6 +6,7 @@ import torch.optim as optim
 from torch.optim import lr_scheduler
 import progressbar
 from model import ConvNet
+import matplotlib.pyplot as plt
 import sys
 
 if __name__ == "__main__":
@@ -113,6 +114,12 @@ if __name__ == "__main__":
     # Best accuracy
     bestAcc = 0
 
+    trAccs = []
+    trLosses = []
+    valAccs = []
+    valLosses = []
+    x = range(numEpoch)
+
     for epoch in range(numEpoch):
 
         # Call train and val
@@ -123,4 +130,9 @@ if __name__ == "__main__":
 
 
     # Finished
+    plt.figure()
+    plt.plot(x,trAccs,x,valAccs)
+    plt.figure()
+    plt.plot(x,trLosses,x,valLosses)
+    plt.show()
     print('Finished Training')
