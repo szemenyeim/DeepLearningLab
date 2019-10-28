@@ -35,7 +35,7 @@ def detectImage(img):
     img_hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
     # Threshold using saturation and value
-    img_bin = cv2.inRange(img_hsv, np.array([0, 100, 80]), np.array([255, 255, 255]))
+    img_bin = cv2.inRange(img_hsv, np.array([0, 40, 150]), np.array([255, 255, 255]))
 
     # Run a few iterations of closing
     SE = np.ones((3, 3), np.uint8)
@@ -50,10 +50,15 @@ def detectImage(img):
     # Iterate through bounding boxes
     for ROI in ROIs:
         # Get corner points
-        x1 = ROI[0] - 15
-        x2 = ROI[0] + ROI[2] + 15
-        y1 = ROI[1] - 15
-        y2 = ROI[1] + ROI[3] + 15
+        x1 = max(0,ROI[0] - 5)
+        x2 = min(img.shape[1],(ROI[0] + ROI[2] + 5))
+        y1 = max(0,ROI[1] - 5)
+        y2 = min(img.shape[0],ROI[1] + ROI[3] + 5)
+
+        # Sanity check
+        ratio = (x2-x1)/(y2-y1)
+        if ratio < 0.5 or ratio > 2:
+            continue
 
         # Cut out the box, resize it to 32x32 and convert it to RGB
         imgROI = cv2.cvtColor(cv2.resize(np.copy(img[y1:y2, x1:x2]), (32, 32)), cv2.COLOR_BGR2RGB)
@@ -78,7 +83,7 @@ def detectImage(img):
 
 if __name__ == '__main__':
 
-    cam = False
+    cam = True
 
     if cam:
         cap = cv2.VideoCapture(0)
@@ -96,7 +101,7 @@ if __name__ == '__main__':
 
             # Show image
             cv2.imshow("Image", img)
-            ret = cv2.waitKey(0)
+            ret = cv2.waitKey(1)
             if ret == 27:
                 exit(0)
 
