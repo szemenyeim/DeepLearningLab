@@ -15,7 +15,7 @@ from runner import Runner
 from utils import display_batch, calc_class_weights, setup_IoU
 
 
-def load_dataset(dataset):
+def load_dataset():
     print("\nLoading dataset...\n")
 
     print("Selected dataset:", args.dataset)
@@ -33,15 +33,15 @@ def load_dataset(dataset):
 
     # Get selected dataset
     # Load the training set as tensors
-    train_set = dataset(args.dataset_dir, transform=image_transform, label_transform=label_transform)
+    train_set = CamVid(args.dataset_dir, transform=image_transform, label_transform=label_transform)
     train_loader = data.DataLoader(train_set, batch_size=args.batch_size, shuffle=True, num_workers=args.workers)
 
     # Load the validation set as tensors
-    val_set = dataset(args.dataset_dir, mode='val', transform=image_transform, label_transform=label_transform)
+    val_set = CamVid(args.dataset_dir, mode='val', transform=image_transform, label_transform=label_transform)
     val_loader = data.DataLoader(val_set, batch_size=args.batch_size, shuffle=False, num_workers=args.workers)
 
     # Load the test set as tensors
-    test_set = dataset(args.dataset_dir, mode='test', transform=image_transform, label_transform=label_transform)
+    test_set = CamVid(args.dataset_dir, mode='test', transform=image_transform, label_transform=label_transform)
     test_loader = data.DataLoader(test_set, batch_size=args.batch_size, shuffle=False, num_workers=args.workers)
 
     # Get encoding between pixel values in label images and RGB colors
@@ -191,7 +191,7 @@ if __name__ == '__main__':
 
     device = torch.device(args.device)
 
-    train_loader, val_loader, test_loader, w_class, class_encoding = load_dataset(CamVid)
+    train_loader, val_loader, test_loader, w_class, class_encoding = load_dataset()
 
     if args.mode.lower() in {'train', 'full'}:
         model = train(train_loader, val_loader, w_class, class_encoding)
