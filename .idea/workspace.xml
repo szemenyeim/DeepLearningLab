@@ -2,28 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0b69d6d9-813d-403f-9966-86a7f9f72260" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/DeepLearningLab.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/DeepLearningLab.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Images/IMG_1968.JPG" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Images/IMG_1969.JPG" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Images/IMG_1970.JPG" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Images/IMG_1971.JPG" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Images/IMG_1972.JPG" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Images/IMG_1973.JPG" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Images/IMG_1974.JPG" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Images/IMG_1975.JPG" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Images/IMG_1976.JPG" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Images/IMG_1977.JPG" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/detect.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/imageNet.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logger.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/train.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/camvid.py" beforeDir="false" afterPath="$PROJECT_DIR$/data/camvid.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,7 +61,8 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1599401742364</updated>
-      <workItem from="1599401743493" duration="350000" />
+      <workItem from="1599401743493" duration="407000" />
+      <workItem from="1599418364006" duration="1624000" />
     </task>
     <servers />
   </component>
@@ -92,8 +74,35 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="137" y="19" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1599402096184" />
+    <state width="1323" height="179" key="GridCell.Tab.0.bottom" timestamp="1599402153103">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1323" height="179" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1599402153103" />
+    <state width="1323" height="179" key="GridCell.Tab.0.center" timestamp="1599402153103">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1323" height="179" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1599402153103" />
+    <state width="1323" height="179" key="GridCell.Tab.0.left" timestamp="1599402153102">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1323" height="179" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1599402153102" />
+    <state width="1323" height="179" key="GridCell.Tab.0.right" timestamp="1599402153103">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1323" height="179" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1599402153103" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/data/camvid.py</url>
+          <line>159</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/DeepLearningLab$main.coverage" NAME="main Coverage Results" MODIFIED="1599402038923" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/DeepLearningLab$main.coverage" NAME="main Coverage Results" MODIFIED="1599422148698" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
