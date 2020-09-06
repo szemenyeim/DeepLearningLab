@@ -31,18 +31,19 @@ def load_dataset():
         ext_transforms.PILToLongTensor()
     ])
 
+    """Create datasets and dataloaders"""
     # Get selected dataset
     # Load the training set as tensors
-    train_set = CamVid(args.dataset_dir, transform=image_transform, label_transform=label_transform)
-    train_loader = data.DataLoader(train_set, batch_size=args.batch_size, shuffle=True, num_workers=args.workers)
+    train_set = CamVid()
+    train_loader = None
 
     # Load the validation set as tensors
-    val_set = CamVid(args.dataset_dir, mode='val', transform=image_transform, label_transform=label_transform)
-    val_loader = data.DataLoader(val_set, batch_size=args.batch_size, shuffle=False, num_workers=args.workers)
+    val_set = CamVid()
+    val_loader = None
 
     # Load the test set as tensors
-    test_set = CamVid(args.dataset_dir, mode='test', transform=image_transform, label_transform=label_transform)
-    test_loader = data.DataLoader(test_set, batch_size=args.batch_size, shuffle=False, num_workers=args.workers)
+    test_set = CamVid()
+    test_loader = None
 
     # Get encoding between pixel values in label images and RGB colors
     class_encoding = train_set.color_encoding
@@ -69,21 +70,23 @@ def train(train_loader, val_loader, class_weights, class_encoding):
 
     num_classes = len(class_encoding)
 
+    """Create network and deploy to device"""
     # Intialize ENet
-    model = ENet(num_classes).to(device)
+    model = None
     # Check if the network architecture is correct
     print(model)
 
+    """Create criterion with weights"""
     # We are going to use the CrossEntropyLoss loss function as it's most
     # frequentely used in classification problems with multiple classes which
     # fits the problem. This criterion  combines LogSoftMax and NLLLoss.
-    criterion = nn.CrossEntropyLoss(weight=class_weights)
+    criterion = None
 
-    # ENet authors used Adam as the optimizer
-    optimizer = optim.Adam(model.parameters(), lr=args.learning_rate, weight_decay=args.weight_decay)
+    """Create ADAM optimizer with weight decay"""
+    optimizer = None
 
-    # Learning rate decay scheduler
-    lr_updater = lr_scheduler.StepLR(optimizer, args.lr_decay_epochs, args.lr_decay)
+    """Create learning rate decay scheduler (StepLR)"""
+    lr_updater = None
 
     metric = setup_IoU(args, class_encoding)
 
@@ -96,10 +99,11 @@ def train(train_loader, val_loader, class_weights, class_encoding):
         start_epoch = 0
         best_miou = 0
 
-    # Start Training
+
+    """Create Runner objects"""
     print()
-    train = Runner(model, train_loader, criterion, metric, device, is_train=True, optim=optimizer)
-    val = Runner(model, val_loader, criterion, metric, device, is_train=False)
+    train = None
+    val = None
 
     for epoch in range(start_epoch, args.epochs):
         print(f">>>> [Epoch: {epoch:d}] Training")

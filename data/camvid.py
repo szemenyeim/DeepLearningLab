@@ -143,21 +143,21 @@ class CamVid(data.Dataset):
                                "Supported modes are: train, val and test")
 
     def exec_transform(self, img, label):
-        seed = np.random.randint(2147483647)  # make a seed with numpy generator
-        random.seed(seed)  # apply this seed to img transforms
+        pass
+        """ Make a seed with numpy generator"""
+        """apply this seed to img transforms"""
+
 
         if self.transform is not None:
             img = self.transform(img)
 
-        random.seed(seed)  # apply this seed to label transforms
+        """apply this seed to label transforms"""
+
+
         if self.label_transform is not None:
             label = self.label_transform(label)
 
-        # Random horizontal flip
-        if self.mode.lower() == "train":
-            p = torch.rand(1).item()
-            if p > 0.5:
-                img = img.flip(-1)
-                label = label.flip(-1)
+        """Random horizontal flip (with probability 0.5)"""
+
 
         return img, label

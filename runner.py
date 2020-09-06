@@ -54,11 +54,11 @@ class Runner:
             if self.is_train:
                 loss, outputs = self.train_pass(inputs, labels)
             else:
-                loss, outputs = self.test_pass(inputs, labels, loss, outputs)
+                loss, outputs = self.test_pass(inputs, labels)
 
 
-            # Keep track of loss for current epoch
-            epoch_loss += loss.item()
+            """Keep track of loss for current epoch"""
+            epoch_loss += None
 
             # Keep track of the evaluation metric
             self.metric.add(outputs.detach(), labels.detach())
@@ -75,25 +75,27 @@ class Runner:
             self.model.eval()
 
     def test_pass(self, inputs, labels):
-        with torch.no_grad():
-            # Forward propagation
-            outputs = self.model(inputs)
+        loss, outputs = None, None
 
-            # Loss computation
-            loss = self.criterion(outputs, labels)
+        """ the below two steps should be within a clause"""
+        """ here something is needed that is specific to the test pass"""
+            #Forward propagation
+
+
+            #Loss computation
+
 
         return loss, outputs
 
     def train_pass(self, inputs, labels):
-        # Forward propagation
-        outputs = self.model(inputs)
+        loss, outputs = None, None
+        """Forward propagation"""
 
-        # Loss computation
-        loss = self.criterion(outputs, labels)
 
-        # Backpropagation
-        self.optim.zero_grad()
-        loss.backward()
-        self.optim.step()
+        """Loss computation"""
+
+
+        """Backpropagation"""
+
 
         return loss, outputs

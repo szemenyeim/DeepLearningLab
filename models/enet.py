@@ -5,22 +5,14 @@ import torch.nn as nn
 class ConvBlock(nn.Module):
     def __init__(self, in_ch, out_ch, kernel, stride=1, padding=0, dilation=1, bias=True, activation=nn.ReLU()) -> None:
         super().__init__()
-        self.in_ch = in_ch
-        self.out_ch = out_ch
 
-        self.kernel = kernel
-        self.stride = stride
-        self.padding = padding
-        self.dilation = dilation
-
-        self.bias = bias
-
-        self.conv = nn.Conv2d(in_ch, out_ch, kernel, stride, padding, dilation, bias=bias)
-        self.bn = nn.BatchNorm2d(out_ch)
-        self.activation = activation
+        """Create 2d conv, batch normalization, and an activation layer"""
 
     def forward(self, x):
-        return self.activation(self.bn(self.conv(x)))
+        pass
+        """Define the forward pass"""
+
+        return None
 
 
 class InitialBlock(nn.Module):
@@ -148,22 +140,19 @@ class RegularBottleneck(nn.Module):
         # 1x1 projection convolution
         self.ext_conv1 = ConvBlock(channels, internal_channels, 1, stride, 0, 1, bias, activation())
 
+
+        """Write the (asymmetric convolution)"""
         # If the convolution is asymmetric we split the main convolution in
         # two. Eg. for a 5x5 asymmetric convolution we have two convolution:
         # the first is 5x1 and the second is 1x5.
+        # In the asymmetric case, padding also needs to be a tuple of two
+        # (the item corresponding to "1" in the kernel is always 0
         if asymmetric:
-            self.ext_conv2 = nn.Sequential(
-                ConvBlock(internal_channels, internal_channels, (kernel_size, 1), stride, (padding, 0), dilation, bias,
-                          activation()),
-                ConvBlock(internal_channels, internal_channels, (1, kernel_size), stride, (0, padding), dilation, bias,
-                          activation()),
-            )
+            self.ext_conv2 = None
         else:
-            self.ext_conv2 = ConvBlock(internal_channels, internal_channels, kernel_size, stride, padding, dilation,
-                                       bias, activation())
+            self.ext_conv2 = None
 
         # 1x1 expansion convolution
-
         self.ext_conv3 = ConvBlock(internal_channels, channels, 1, stride, 0, 1, bias, activation())
 
         self.ext_regul = nn.Dropout2d(p=dropout_prob)
@@ -172,19 +161,16 @@ class RegularBottleneck(nn.Module):
         self.out_activation = activation()
 
     def forward(self, x):
-        # Main branch shortcut
-        main = x
+        pass
+        """Main branch shortcut"""
 
-        # Extension branch
-        ext = self.ext_conv1(x)
-        ext = self.ext_conv2(ext)
-        ext = self.ext_conv3(ext)
-        ext = self.ext_regul(ext)
+        """Extension branch (three convs + regularizer)"""
 
-        # Add main and extension branches
-        out = main + ext
+        """Add main and extension branches"""
 
-        return self.out_activation(out)
+        """Call the output activation"""
+
+        return
 
 
 class DownsamplingBottleneck(nn.Module):
