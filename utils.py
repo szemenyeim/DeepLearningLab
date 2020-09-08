@@ -7,7 +7,7 @@ import os
 from torchvision import transforms as transforms
 
 import transforms as ext_transforms
-from data.utils import enet_weighing, median_freq_balancing
+from data_utils import enet_weighing, median_freq_balancing
 from metric import IoU
 
 
