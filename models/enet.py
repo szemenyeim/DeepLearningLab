@@ -6,11 +6,11 @@ class ConvBlock(nn.Module):
     def __init__(self, in_ch, out_ch, kernel, stride=1, padding=0, dilation=1, bias=True, activation=nn.ReLU()) -> None:
         super().__init__()
 
-        """Create 2d conv, batch normalization, and an activation layer"""
+        """TODO: Create 2d conv, batch normalization, and an activation layer"""
 
     def forward(self, x):
         pass
-        """Define the forward pass"""
+        """TODO: Define the forward pass"""
 
         return None
 
@@ -141,7 +141,7 @@ class RegularBottleneck(nn.Module):
         self.ext_conv1 = ConvBlock(channels, internal_channels, 1, stride, 0, 1, bias, activation())
 
 
-        """Write the (asymmetric convolution)"""
+        """TODO: Write the (asymmetric convolution)"""
         # If the convolution is asymmetric we split the main convolution in
         # two. Eg. for a 5x5 asymmetric convolution we have two convolution:
         # the first is 5x1 and the second is 1x5.
@@ -162,13 +162,13 @@ class RegularBottleneck(nn.Module):
 
     def forward(self, x):
         pass
-        """Main branch shortcut"""
+        """TODO: Main branch shortcut"""
 
-        """Extension branch (three convs + regularizer)"""
+        """TODO: Extension branch (three convs + regularizer)"""
 
-        """Add main and extension branches"""
+        """TODO: Add main and extension branches"""
 
-        """Call the output activation"""
+        """TODO: Call the output activation"""
 
         return
 

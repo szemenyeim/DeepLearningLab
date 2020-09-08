@@ -31,7 +31,7 @@ def load_dataset():
         ext_transforms.PILToLongTensor()
     ])
 
-    """Create datasets and dataloaders"""
+    """TODO: Create datasets and dataloaders"""
     # Get selected dataset
     # Load the training set as tensors
     train_set = CamVid()
@@ -44,6 +44,8 @@ def load_dataset():
     # Load the test set as tensors
     test_set = CamVid()
     test_loader = None
+
+    """TODO: end"""
 
     # Get encoding between pixel values in label images and RGB colors
     class_encoding = train_set.color_encoding
@@ -70,22 +72,22 @@ def train(train_loader, val_loader, class_weights, class_encoding):
 
     num_classes = len(class_encoding)
 
-    """Create network and deploy to device"""
+    """TODO: Create network and deploy to device"""
     # Intialize ENet
     model = None
     # Check if the network architecture is correct
     print(model)
 
-    """Create criterion with weights"""
+    """TODO: Create criterion with weights"""
     # We are going to use the CrossEntropyLoss loss function as it's most
     # frequentely used in classification problems with multiple classes which
     # fits the problem. This criterion  combines LogSoftMax and NLLLoss.
     criterion = None
 
-    """Create ADAM optimizer with weight decay"""
+    """TODO: Create ADAM optimizer with weight decay"""
     optimizer = None
 
-    """Create learning rate decay scheduler (StepLR)"""
+    """TODO: Create learning rate decay scheduler (StepLR)"""
     lr_updater = None
 
     metric = setup_IoU(args, class_encoding)
@@ -100,7 +102,7 @@ def train(train_loader, val_loader, class_weights, class_encoding):
         best_miou = 0
 
 
-    """Create Runner objects"""
+    """TODO: Create Runner objects"""
     print()
     train = None
     val = None

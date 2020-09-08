@@ -77,8 +77,8 @@ class Runner:
     def test_pass(self, inputs, labels):
         loss, outputs = None, None
 
-        """ the below two steps should be within a clause"""
-        """ here something is needed that is specific to the test pass"""
+        """TODO: the below two steps should be within a clause"""
+        """TODO: here something is needed that is specific to the test pass"""
             #Forward propagation
 
 
@@ -89,13 +89,13 @@ class Runner:
 
     def train_pass(self, inputs, labels):
         loss, outputs = None, None
-        """Forward propagation"""
+        """TODO: Forward propagation"""
 
 
-        """Loss computation"""
+        """TODO: Loss computation"""
 
 
-        """Backpropagation"""
+        """TODO: Backpropagation"""
 
 
         return loss, outputs

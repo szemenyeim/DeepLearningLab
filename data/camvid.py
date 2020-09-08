@@ -144,20 +144,20 @@ class CamVid(data.Dataset):
 
     def exec_transform(self, img, label):
         pass
-        """ Make a seed with numpy generator"""
-        """apply this seed to img transforms"""
+        """TODO: Make a seed with numpy generator"""
+        """TODO: apply this seed to img transforms"""
 
 
         if self.transform is not None:
             img = self.transform(img)
 
-        """apply this seed to label transforms"""
+        """TODO: apply this seed to label transforms"""
 
 
         if self.label_transform is not None:
             label = self.label_transform(label)
 
-        """Random horizontal flip (with probability 0.5)"""
+        """TODO: Random horizontal flip (with probability 0.5)"""
 
 
         return img, label
