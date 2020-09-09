@@ -131,9 +131,9 @@ def load_checkpoint(model, optimizer, folder_dir, filename):
 
 
 def display_batch(args, class_encoding, test_loader, train_loader):
-    if args.imshow_batch:
+    if args["imshow_batch"]:
         # Get a batch of samples to display
-        if args.mode.lower() == 'test':
+        if args["mode"].lower() == 'test':
             images, labels = iter(test_loader).next()
         else:
             images, labels = iter(train_loader).next()
@@ -154,24 +154,24 @@ def display_batch(args, class_encoding, test_loader, train_loader):
 def calc_class_weights(args, class_encoding, train_loader):
 
     num_classes = len(class_encoding)
-    device = torch.device(args.device)
+    device = torch.device(args["device"])
 
     # Get class weights from the selected weighing technique
-    print("\nWeighing technique:", args.weighing)
+    print("\nWeighing technique:", args["weighing"])
     print("Computing class weights...")
     print("(this can take a while depending on the dataset size)")
 
     class_weights = 0
-    if args.weighing.lower() == 'enet':
+    if args["weighing"].lower() == 'enet':
         class_weights = enet_weighing(train_loader, num_classes)
-    elif args.weighing.lower() == 'mfb':
+    elif args["weighing"].lower() == 'mfb':
         class_weights = median_freq_balancing(train_loader, num_classes)
     else:
         class_weights = None
     if class_weights is not None:
         class_weights = torch.from_numpy(class_weights).float().to(device)
         # Set the weight of the unlabeled class to 0
-        if args.ignore_unlabeled:
+        if args["ignore_unlabeled"]:
             ignore_index = list(class_encoding).index('unlabeled')
             class_weights[ignore_index] = 0
     print("Class weights:", class_weights)
@@ -184,7 +184,7 @@ def setup_IoU(args, class_encoding):
     num_classes = len(class_encoding)
 
     # Evaluation metric
-    if args.ignore_unlabeled:
+    if args["ignore_unlabeled"]:
         ignore_index = list(class_encoding).index('unlabeled')
     else:
         ignore_index = None
