@@ -7,7 +7,7 @@ import os
 from torchvision import transforms as transforms
 
 import transforms as ext_transforms
-from data.utils import enet_weighing, median_freq_balancing
+from data_utils import enet_weighing, median_freq_balancing
 from metric import IoU
 
 
@@ -40,10 +40,12 @@ def imshow_batch(images, labels):
     (B, C, H, W)
 
     """
+    
+    B = images.shape[0]
 
     # Make a grid with the images and labels and convert it to numpy
-    images = torchvision.utils.make_grid(images).numpy()
-    labels = torchvision.utils.make_grid(labels).numpy()
+    images = torchvision.utils.make_grid(images, nrow=B//2).numpy()
+    labels = torchvision.utils.make_grid(labels, nrow=B//2).numpy()
 
     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(15, 7))
     ax1.imshow(np.transpose(images, (1, 2, 0)))
@@ -65,8 +67,8 @@ def save_checkpoint(model, optimizer, epoch, miou, args):
     file in ``args.save_dir`` named "``args.name``_args.txt".
 
     """
-    name = args.name
-    save_dir = args.save_dir
+    name = args['name']
+    save_dir = args['save_dir']
 
     assert os.path.isdir(
         save_dir), "The directory \"{0}\" doesn't exist.".format(save_dir)
@@ -82,7 +84,7 @@ def save_checkpoint(model, optimizer, epoch, miou, args):
     torch.save(checkpoint, model_path)
 
     # Save arguments
-    summary_filename = os.path.join(save_dir, name + '_summary.txt')
+    '''summary_filename = os.path.join(save_dir, name + '_summary.txt')
     with open(summary_filename, 'w') as summary_file:
         sorted_args = sorted(vars(args))
         summary_file.write("ARGUMENTS\n")
@@ -92,7 +94,7 @@ def save_checkpoint(model, optimizer, epoch, miou, args):
 
         summary_file.write("\nBEST VALIDATION\n")
         summary_file.write("Epoch: {0}\n". format(epoch))
-        summary_file.write("Mean IoU: {0}\n". format(miou))
+        summary_file.write("Mean IoU: {0}\n". format(miou))'''
 
 
 def load_checkpoint(model, optimizer, folder_dir, filename):
@@ -131,9 +133,9 @@ def load_checkpoint(model, optimizer, folder_dir, filename):
 
 
 def display_batch(args, class_encoding, test_loader, train_loader):
-    if args.imshow_batch:
+    if args['imshow_batch']:
         # Get a batch of samples to display
-        if args.mode.lower() == 'test':
+        if args['mode'].lower() == 'test':
             images, labels = iter(test_loader).next()
         else:
             images, labels = iter(train_loader).next()
@@ -154,24 +156,24 @@ def display_batch(args, class_encoding, test_loader, train_loader):
 def calc_class_weights(args, class_encoding, train_loader):
 
     num_classes = len(class_encoding)
-    device = torch.device(args.device)
+    device = torch.device(args['device'])
 
     # Get class weights from the selected weighing technique
-    print("\nWeighing technique:", args.weighing)
+    print("\nWeighing technique:", args['weighing'])
     print("Computing class weights...")
     print("(this can take a while depending on the dataset size)")
 
     class_weights = 0
-    if args.weighing.lower() == 'enet':
+    if args['weighing'].lower() == 'enet':
         class_weights = enet_weighing(train_loader, num_classes)
-    elif args.weighing.lower() == 'mfb':
+    elif args['weighing'].lower() == 'mfb':
         class_weights = median_freq_balancing(train_loader, num_classes)
     else:
         class_weights = None
     if class_weights is not None:
         class_weights = torch.from_numpy(class_weights).float().to(device)
         # Set the weight of the unlabeled class to 0
-        if args.ignore_unlabeled:
+        if args['ignore_unlabeled']:
             ignore_index = list(class_encoding).index('unlabeled')
             class_weights[ignore_index] = 0
     print("Class weights:", class_weights)
@@ -184,7 +186,7 @@ def setup_IoU(args, class_encoding):
     num_classes = len(class_encoding)
 
     # Evaluation metric
-    if args.ignore_unlabeled:
+    if args['ignore_unlabeled']:
         ignore_index = list(class_encoding).index('unlabeled')
     else:
         ignore_index = None

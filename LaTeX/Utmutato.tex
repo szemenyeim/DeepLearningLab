@@ -73,7 +73,7 @@
 % Main variables
 %--------------------------------------------------------------------------------------
 \newcommand{\vikauthor}{Szemenyei Márton}
-\newcommand{\viktitle}{M9 – Osztályozás mély neurális hálókkal}
+\newcommand{\viktitle}{M9 – Szegmentálás mély neurális hálókkal}
 \newcommand{\vikdept}{Irányítástechnika és Informatika Tanszék}
 \newcommand{\vikdoktipus}{Irányítástechnika és Képfeldolgozás Laboratórium 1.}
 \newcommand{\viksubtitle}{Mérési Útmutató}
@@ -215,7 +215,19 @@ Ennek a problémának a megoldásához a mesterséges intelligencia, ezen belül
 
 A neurális hálózatokról és azok tanításáról bővebben a Számítógépes Látórendszerek c. tárgy jegyzetében~\cite{szgl} olvashatunk.
 
-\chapter{A mérés környyezete}
+\section{Az EfficientNet architektúra}
+
+Az EfficientNet~\cite{effnet} egy olyan konvolúciós neurális háló architektúra, amelyet automatikus optimalizáló eljárással (ún. Neural Architecture Search~\cite{nas} módszerrel) fejlesztettek ki. Ez egy olyan eljáráa, ahol egy megerősítéses tanulás ágenst arra tanítanak, hogy minél jobb neurális háló architektúrákat generáljon. Itt a jóság alatt a háló elért pontossága és az architektúra gyorsasága közötti valamilyen kompromisszumot értjük. Ezt jól illusztrálja az alábbi ábra:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{images/effnet.png}
+	\caption{Az EfficientNet architektúra pontossága az ImageNet adatbázison a paraméterszám függvényében, más hálózatokkal összehasonlítva.}
+\end{figure}
+
+Az EfficientNet architektúra implementálása maga nem a mérés része, azonban a konvolúciós blokkot érdemes vizsgálni, ugyanis ebben a korábban megismert trükkök közül több is megtalálható. Az EfficientNet alapvető blokkja ugyanis egy bottleneck-et tartalmazó reziduális blokk, amelynek fő konvolúciós eleme (amelyik $5\times 5$ kiterjedésű) aszimmetrikus. Ez azt jelenti, hogy egy darab $5\times 5$ konvolúció helyett egy $5\times 1$ és egy $1\times 5$ konvolúciót hajtunk végre egymás után. Ennek számítási igénye $O(5\times 5\times ch)$ helyett $O(2\times 5\times ch)$.
+
+\chapter{A mérés környezete}
 
 A mérés során a \emph{PyCharm} elnevezésű IDE áll rendelkezésre, amely rendkívül sokoldalú szolgáltatásokkal könnyíti meg a szoftverfejlesztést, például konfigurálható automatikus formázási lehetőségek állnak rendelkezésünkre. További részletekért érdemes lehet a JetBrains ide vonatkozó weboldalát~\cite{pycharm} felkeresni. Függvények, objektumok esetében a \textbf{\textit{Ctrl+P}} billentyűkombináció pop-up segítségként szolgálva mutatja nekünk a paramétereket. A mérés során használt programnyelv a Python 3-as verziója lesz.
 
@@ -388,43 +400,23 @@ Fontos megemlíteni, hogy a $numpy.ndarray$ típuson elvégezhető műveletek na
 A mérés folyamán az alábbi feladatokat kell elvégezni:
 
 \begin{enumerate}
-\item Készítsen egy egyszerű néhány rétegből álló neurális háló architektúrát az \ref{tab:1}.~Táblázatban megadott paraméterek alapján.
+\item Egészítse ki a mellékelt notebookban megadott adatbázis beolvasót adataugmentációs eljárásokkal.
+\item Implementálja le az EfficientNet architektúra alapvető konvolúciós blokkját, és az asszimetrikus reziduális blokkját.
 \item Készítsen eljárást egyszerű neurális háló tanítására a méréshez használt adatbázison.
-\item Végezzen el különböző tanításokat a \ref{tab:2}.~Táblázatban megadott hiperparaméterek alapján.
-\item Valósítson meg egy egyszerű közlekedési tábla detektáló és osztályozó algoritmust a mérésvezető által szolgáltatott képekre.
+\item Végezzen el különböző tanításokat a \ref{tab:2}.~Táblázatban megadott hiperparaméterek alapján, értékelje ezek eredményeit.
 \end{enumerate}
 
 \begin{table}[!htb]
-	\centering
-	\begin{tabular}{| l | c | c | c |}
-		\hline
-		\textbf{Típus} & \textbf{Csatornák száma} & \textbf{Méret} & \textbf{Stride} \\ \hline \hline
-		Konvolúciós & $N_{CH}$ & $3\times 3$ & $1$ \\ \hline
-		Konvolúciós & $N_{CH}*2$ & $3\times 3$ & $2$ \\ \hline
-		Konvolúciós & $N_{CH}*2$ & $3\times 3$ & $1$ \\ \hline
-		Konvolúciós & $N_{CH}*4$ & $3\times 3$ & $2$ \\ \hline
-		Konvolúciós & $N_{CH}*4$ & $3\times 3$ & $1$ \\ \hline
-		Konvolúciós & $N_{CH}*8$ & $3\times 3$ & $2$ \\ \hline
-		Konvolúciós & $N_{CH}*8$ & $3\times 3$ & $1$ \\ \hline
-		Konvolúciós & $N_{CH}*16$ & $3\times 3$ & $2$ \\ \hline
-		Konvolúciós & $N_{CH}*16$ & $3\times 3$ & $1$ \\ \hline
-		Konvolúciós & $N_{CH}*32$ & $3\times 3$ & $2$ \\ \hline
-		Osztályozó & $55$ & $1\times 1$ & $1$ \\ \hline
-	\end{tabular}
-\caption{Az elkészítendő neurális háló architektúrája.}
-\label{tab:1}
-\end{table}
-
-\begin{table}[!htb]
 \centering
-\begin{tabular}{| c | c | c | c | c |}
+\begin{tabular}{| c | c | c | c | c | c |}
 	\hline
-	$N_{CH}$ & \textbf{LR} & \textbf{Eta\_min} & \textbf{Momentum} & \textbf{Decay} \\ \hline \hline
-	8 & 1e-1 & 1e-2 & 0.1 & 1e-3 \\ \hline
-	8 & 1e-1 & 1e-2 & 0.9 & 1e-4  \\ \hline
-	8 & 1 & 1e-2 & 0.9 & 1e-1  \\ \hline
-	8 & 1e-3 & 1e-4 & 0.9 & 1e-5  \\ \hline
-	16 & 1e-1& 1e-2 & 0.9 & 1e-5  \\ \hline
+	epochs & lr\_decay\_epochs & batch\_size & lr & lr\_decay & weight\_decay \\ \hline \hline
+	20 & 10 & 8 & 5e-4 & 0.1 &  2e-4  \\ \hline
+	20 & 10 & 8 & 1e-1 & 0.1 & 2e-4 \\ \hline
+	20 & 10 & 8 & 5e-4 & 0.001 &  2e-4  \\ \hline
+	20 & 10 & 8 & 5e-4 & 0.1 &  1e-1  \\ \hline
+	20 & 10 & 2 & 5e-4 & 0.1 &  2e-4   \\ \hline
+	100 & 50 & 8 & 5e-4 & 0.1 &  2e-4  \\ \hline
 \end{tabular}
 \caption{A Vizsgálandó hiperparaméter kombinációk.}
 \label{tab:2}
@@ -432,69 +424,47 @@ A mérés folyamán az alábbi feladatokat kell elvégezni:
 
 \chapter{Hasznos kódrészletek}
 
-Különböző rétegek létrehozása PyTorch környezeteben
+Érték elérése az argumentumokból
 
 \begin{lstlisting}[language=Python]
-self.conv = nn.Conv2d(inplanes,planes,size,padding=size//2,stride=stride)
-self.bn = nn.BatchNorm2d(planes)
+myVal = args["arg_name"]
 \end{lstlisting}
 
-Rétegek meghívása
+Tenzor tükrözése a vízszintes tengely mentén (utolsó dimenzió)
 
 \begin{lstlisting}[language=Python]
-out = F.relu(self.bn(self.conv(x)))
+tensor = tensor.flip(-1)
 \end{lstlisting}
 
-Térbeli dimenziók eldobása az osztályozó réteg után
+Transzformációk kompozíciója
 
 \begin{lstlisting}[language=Python]
-out = out.squeeze()
+image_transform = transforms.Compose(
+	[transform1,
+	transform2]
+)
 \end{lstlisting}
 
-Adat augmentációs függvények
+Átméretezés transzformáció
 
 \begin{lstlisting}[language=Python]
-transforms.RandomCrop(32, padding=4),
-transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1),
-transforms.ToTensor(),
-transforms.Normalize((0.49139968, 0.48215827, 0.44653124),
-					(0.24703233, 0.24348505, 0.26158768))
+transforms.Resize((height, width), INTER_MODE)
+#Interpolation can be Image.LINEAR or Image.NEAREST
 \end{lstlisting}
 
-Különböző augmentációs módszerek összefűzése
+Tenzor konverzió
 
 \begin{lstlisting}[language=Python]
-transform = transforms.Compose( <list of transforms> )
+# To float tensor (for images)
+transforms.ToTensor()
+# To long tensor (for labels)
+ext_transforms.PILToLongTensor()
 \end{lstlisting}
 
-Adatbázis létrehozása
+Dataloader létrehozása
 
 \begin{lstlisting}[language=Python]
-dataSet = torchvision.datasets.ImageFolder(root=root, transform=transform)
-\end{lstlisting}
-
-Adat betöltő létrehozása
-
-\begin{lstlisting}[language=Python]
-dataLoader = torch.utils.data.DataLoader(trainSet, batch_size=512, shuffle=True, num_workers=4)
-\end{lstlisting}
-
-Költségfüggvény létrehozása
-
-\begin{lstlisting}[language=Python]
-criterion = nn.CrossEntropyLoss()
-\end{lstlisting}
-
-Optimalizáló módszer létrehozás
-
-\begin{lstlisting}[language=Python]
-optimizer = optim.SGD(net.parameters(), lr=0.1, momentum=0.9, nesterov=True, weight_decay=1e-4)
-\end{lstlisting}
-
-Tanulási ráta ütemező létrehozása
-
-\begin{lstlisting}[language=Python]
-scheduler = lr_scheduler.CosineAnnealingLR(optimizer,numEpoch,eta_min)
+dataLoader = torch.utils.data.DataLoader(trainSet, batch_size=..., shuffle=True/False, num_workers=...)
 \end{lstlisting}
 
 Neurális háló módjainak állítása
@@ -502,31 +472,6 @@ Neurális háló módjainak állítása
 \begin{lstlisting}[language=Python]
 net.train()
 net.eval()
-\end{lstlisting}
-
-Progress bar készítése
-
-\begin{lstlisting}[language=Python]
-# Create progress bar
-bar = progressbar.ProgressBar(0, len(trainLoader), redirect_stdout=False)
-	# Inside the loop:
-	bar.update(i)
-# Upon finishing:
-bar.finish()
-\end{lstlisting}
-
-Dataloaderen történő iterálás:
-
-\begin{lstlisting}[language=Python]
-# Epoch loop
-for i, (inputs,labels) in enumerate(trainLoader, 0):
-\end{lstlisting}
-
-CUDA konverzió
-
-\begin{lstlisting}[language=Python]
-if haveCuda:
-	inputs = inputs.cuda()
 \end{lstlisting}
 	
 Optimizer kinullázása
@@ -559,74 +504,54 @@ Egy lépés gradiens módszerrel
 optimizer.step()
 \end{lstlisting}
 
-Tanulási ráta ütemező léptetése
+Gradiens számítás megelőzése
 
 \begin{lstlisting}[language=Python]
-scheduler.step()
+with torch.no_grad():
 \end{lstlisting}
 
-Modell mentése
+Különböző rétegek létrehozása PyTorch környezeteben
 
 \begin{lstlisting}[language=Python]
-torch.save(net, root + '/model.pth')
+self.conv = nn.Conv2d(...)
+self.bn = nn.BatchNorm2d(...)
 \end{lstlisting}
 
-OpenCV kép PyTorch tenzorrá történő konvertálása
+Rétegek kombinálása
 
 \begin{lstlisting}[language=Python]
-# BGR to RGB
-img2 = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-# Convert to PIL image
-pil_im = Image.fromarray(img2)
-# Apply transform function, unsqueeze and convert to cuda
-imageT = transform(pil_im).unsqueeze(0).cuda()
+self.combined = nn.Sequential(layer_1,layer_2,)
 \end{lstlisting}
 
-Küszöbözés határok közt
+Rétegek meghívása
 
 \begin{lstlisting}[language=Python]
-img_bin = cv2.inRange(img_hsv,np.array([0,100,80]),np.array([255,255,255]))
+out = self.layer_name(in)
 \end{lstlisting}
 
-Morfológia
+Tenzor/Modell átvitele a megfelelő eszközre (GPU/CPU)
 
 \begin{lstlisting}[language=Python]
-SE = np.ones((3, 3), np.uint8)
-img_bin = cv2.morphologyEx(img_bin, cv2.MORPH_CLOSE, SE,iterations=4)
+model = model.to(self.device)
 \end{lstlisting}
 
-Kontúrok keresése
+Költségfüggvény létrehozása
 
 \begin{lstlisting}[language=Python]
-contours, _ = cv2.findContours(binImage,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+criterion = nn.CrossEntropyLoss(weight=...)
 \end{lstlisting}
 
-Képrészlet kivágása (hard copy)
+Optimalizáló módszer létrehozás
 
 \begin{lstlisting}[language=Python]
-imgROI = img[y1:y2,x1:x2].copy()
+optimizer = optim.Adam(model.parameters(), lr=..., weight_decay=...)
 \end{lstlisting}
 
-Kép átméretezése
+Tanulási ráta ütemező létrehozása
 
 \begin{lstlisting}[language=Python]
-imgROI = cv2.resize(imgROI,(32,32))
+lr_updater = lr_scheduler.StepLR(optimizer, <lr_decay_epochs>, <lr_decay>)
 \end{lstlisting}
-
-Numpy - torch konverzió és dimenziók cserélése
-
-\begin{lstlisting}[language=Python]
-imgROI = torch.Tensor(imgROI)
-permuted = imgROI.permute(2,0,1)
-\end{lstlisting}
-
-Téglalap rajzolása és kiírás
-
-\begin{lstlisting}[language=Python]
-cv2.rectangle(img,(x1,y1),(x2,y2),(255,0,255),2)
-cv2.putText(img,className,(x1,y1-10),cv2.FONT_HERSHEY_COMPLEX_SMALL,1.0,(0,255,0))
-\end{lstlisting}
-
 
 
 \chapter{Ellenőrző kérdések}
